@@ -24,7 +24,7 @@ const apiService = {
     // ===== 인증 API =====
 
     // TODO: 회원가입 API
-    // POST /auth/signup
+    // POST /auth/signupPage
     // body: { username, email, password, fullName }
     signup: async (username, email, password, fullName) => {
         // TODO: API 호출을 완성하세요

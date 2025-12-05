@@ -19,6 +19,7 @@ const FeedPage = () => {
     // TODO: stories state를 선언하세요 (초기값: [])
 
     // TODO: loading state를 선언하세요 (초기값: true)
+    const [loading, setLoading] = useState(false);
 
     // TODO: useNavigate를 사용하여 navigate 함수를 가져오세요
 
@@ -51,15 +52,15 @@ const FeedPage = () => {
     };
 
     // TODO: loading이 true면 "로딩 중..." 표시
-    // if (loading) {
-    //     return (
-    //         <div className="feed-container">
-    //             <div style={{ padding: '2rem', textAlign: 'center' }}>
-    //                 로딩 중...
-    //             </div>
-    //         </div>
-    //     );
-    // }
+    if (loading) {
+        return (
+            <div className="feed-container">
+                <div style={{ padding: '2rem', textAlign: 'center' }}>
+                    로딩 중...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="feed-container">

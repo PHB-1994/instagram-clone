@@ -12,10 +12,12 @@
 
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import FeedPage from "./pages/FeedPage";
 import LoginPage from "./pages/LoginPage";
 import UploadPage from "./pages/UploadPage";
+import PrivateRoute from "./provider/PrivateRoute";
+import SignupPage from "./pages/SignupPage";
 
 // TODO: 필요한 컴포넌트들을 import 하세요
 
@@ -25,10 +27,21 @@ function App() {
             {/* TODO: Router 설정을 완성하세요 */}
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<LoginPage/>}/>
-                    <Route path="/feed" element={<FeedPage/>}/>
+                    <Route path="/" element={<Navigate to="/login" replace/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/upload" element={<UploadPage/>}/>
+                    <Route path="/signup" element={<SignupPage/>}/>
+                    <Route path="/feed"
+                           element={
+                               <PrivateRoute>
+                                   <FeedPage/>
+                               </PrivateRoute>}
+                    />
+                    <Route path="/upload"
+                           element={
+                               <PrivateRoute>
+                                   <UploadPage/>
+                               </PrivateRoute>}
+                    />
                 </Routes>
             </BrowserRouter>
         </div>
