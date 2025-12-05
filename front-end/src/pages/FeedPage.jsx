@@ -51,15 +51,15 @@ const FeedPage = () => {
     };
 
     // TODO: loading이 true면 "로딩 중..." 표시
-    if (loading) {
-        return (
-            <div className="feed-container">
-                <div style={{ padding: '2rem', textAlign: 'center' }}>
-                    로딩 중...
-                </div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className="feed-container">
+    //             <div style={{ padding: '2rem', textAlign: 'center' }}>
+    //                 로딩 중...
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="feed-container">
