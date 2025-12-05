@@ -22,5 +22,22 @@ public class UserController {
         userService.signup(user);
     }
 
-    
+//    @PostMapping("/login")
+//    public User login(String userEmail, String userPassword) {
+//        // 사용자 인증 이메일, 비밀번호
+//
+//        return userService.login(userEmail, userPassword);
+//    }
+
+    @PostMapping("/login")
+    public void login(User user) {
+        // 사용자 인증 이메일, 비밀번호
+        if(user == null) {
+            // 401 전달
+        }
+
+        // 로그인 성공 JWT 토큰을 생성
+
+        // 토큰 발급에 대한 응답 데이터 생성
+    }
 }
