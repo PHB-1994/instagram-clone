@@ -16,8 +16,9 @@ import apiService from '../service/apiService';
 const LoginPage = () => {
 
     const [username, setUsername] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -30,20 +31,21 @@ const LoginPage = () => {
     // 6. finally: loading을 false로 설정
     const handleLogin = async () => {
         // TODO: 함수를 완성하세요
-            const response = await apiService.login(username, password);
+        try {
+            const res = await apiService.login(userEmail, password);
+            alert("로그인 성공!");
+            navigate("/feed");
 
-        // try {
-        //     localStorage(response.username);
-        //     alert("로그인 성공!");
-        //     navigate("/feed");
-        //
-        // } catch(error) {
-        //     let errorMessage = '로그인에 실패했습니다.';
-        //     alert(errorMessage);
-        //
-        // } finally {
-        //     setLoading(false);
-        // }
+        } catch(err) {
+            if(err.response?.status === 401){
+                alert("이메일 또는 비밀번호가 옳바르지 않습니다.");
+            } else {
+                alert("로그인에 실패했습니다. 다시 로그인해주세요.")
+            }
+
+        } finally {
+            setLoading(false);
+        }
 
     };
 
@@ -68,8 +70,8 @@ const LoginPage = () => {
                             className='login-input'
                             type="text"
                             placeholder="전화번호, 사용자 이름 또는 이메일"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={userEmail}
+                            onChange={(e) => setUserEmail(e.target.value)}
                             onKeyPress={handleKeyPress}
                             />
 

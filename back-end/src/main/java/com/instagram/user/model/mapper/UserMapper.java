@@ -23,7 +23,7 @@ public interface UserMapper {
     String selectUserByUserName(String userName);
 
     // email 을 이용한 사용자 조회
-    String selectUserByUserEmail(String userEmail);
+    User selectUserByUserEmail(String userEmail);
 
     // 비밀번호 확인
     User selectUserByPassword(String userPassword);

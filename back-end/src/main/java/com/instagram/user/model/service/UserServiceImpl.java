@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
     public void signup(User user) {
         // 이미 존재하는 이메일인지 확인하기
         // 이미 존재하는 이메일이라면 throw new RunTimeException 이미 존재하는 이메일입니다. 처리
-        String existingEmail = userMapper.selectUserByUserEmail(user.getUserEmail());
+        User existingEmail = userMapper.selectUserByUserEmail(user.getUserEmail());
         if(existingEmail != null){
             throw new RuntimeException("이미 존재하는 이메일입니다.");
         }
@@ -48,23 +48,24 @@ public class UserServiceImpl implements UserService{
     @Override
     public User login(String userEmail, String userPassword) {
         // 이메일로 사용자 조회
-        User DBUserCheck = userMapper.selectUserByUserEmail(userEmail);
+        User user = userMapper.selectUserByUserEmail(userEmail);
 
-        if(DBUserCheck == null){
+        if(user == null){
             log.warn("로그인 실패 - 존재하지 않는 이메일 : {}",  userEmail);
             return null;
         }
 
         // 비밀번호 검증
-        if(!passwordEncoder.matches(userPassword, DBUserCheck.getUserPassword())){
+        if(!passwordEncoder.matches(userPassword, user.getUserPassword())){
             log.warn("로그인 실패 - 잘못된 비밀번호 : {}", userEmail);
             return null;
         }
 
         // 비밀번호는 응답에서 제거
-        DBUserCheck.setUserPassword(null);
+        user.setUserPassword(null);
         log.info("로그인 성공 - 이메일 {}", userEmail);
-        return null;
+
+        return user;
     }
 
     @Override
