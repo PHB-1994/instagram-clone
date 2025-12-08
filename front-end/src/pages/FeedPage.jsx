@@ -15,15 +15,21 @@ import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Home, PlusSquare,
 
 const FeedPage = () => {
     // TODO: posts state를 선언하세요 (초기값: [])
+    const [posts, setPosts] = useState([]);
 
     // TODO: stories state를 선언하세요 (초기값: [])
+    const [stories, setStories] = useState([]);
 
     // TODO: loading state를 선언하세요 (초기값: true)
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // TODO: useNavigate를 사용하여 navigate 함수를 가져오세요
+    const navigate = useNavigate();
 
     // TODO: useEffect를 사용하여 컴포넌트 마운트 시 loadFeedData 호출
+    useEffect(() => {
+        loadFeedData();
+    }, []);
 
     // TODO: loadFeedData 함수를 작성하세요
     // 1. try-catch 사용

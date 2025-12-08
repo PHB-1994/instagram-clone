@@ -12,7 +12,6 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:9000/api';
 
-// TODO: axios 인스턴스를 생성하세요
 const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -67,7 +66,6 @@ api.interceptors.response.use(
 const apiService = {
     // ===== 인증 API =====
 
-    // TODO: 회원가입 API
     // POST /auth/signupPage
     // body: { username, email, password, fullName }
     signup: async (username, email, password, fullName) => {
@@ -80,7 +78,6 @@ const apiService = {
         return response.data;
     },
 
-    // TODO: 로그인 API
     // POST /auth/login
     // body: { userEmail, password }
     login: async (userEmail, password) => {
