@@ -28,6 +28,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public boolean createPost(Post post) {
         // 게시물이 1개라도 등록되면 true 0 이하는 false
+        // 파일 업로드 서비스 이용해서 게시물 이미지 데이터 저장처리
         return postMapper.insertPost(post) > 0;
     }
 

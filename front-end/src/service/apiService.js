@@ -118,6 +118,12 @@ const apiService = {
     // body: { postImage, postCaption, postLocation }
     createPost: async (postImage, postCaption, postLocation) => {
         // TODO: API 호출을 완성하세요
+        const res = await api.post("/posts", {
+            postImage: postImage,
+            postCaption: postCaption,
+            postLocation: postLocation
+        })
+        return res.data;
     },
 
     // TODO: 게시물 삭제

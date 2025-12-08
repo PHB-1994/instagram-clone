@@ -21,7 +21,7 @@ const FeedPage = () => {
     const [stories, setStories] = useState([]);
 
     // TODO: loading state를 선언하세요 (초기값: true)
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     // TODO: useNavigate를 사용하여 navigate 함수를 가져오세요
     const navigate = useNavigate();
@@ -77,6 +77,11 @@ const FeedPage = () => {
                     <div className="header-nav">
                         {/* TODO: 아이콘들을 작성하세요 */}
                         {/* Home, MessageCircle, PlusSquare(onClick: /upload 이동), Film, User(onClick: 로그아웃) */}
+                        <Home className="header-icon" onClick={() => navigate('/')} />
+                        <MessageCircle className="header-icon" />
+                        <PlusSquare className="header-icon" onClick={() => navigate('/upload')} />
+                        <Film className="header-icon" />
+                        <User className="header-icon" onClick={handleLogout} />
                     </div>
                 </div>
             </header>
