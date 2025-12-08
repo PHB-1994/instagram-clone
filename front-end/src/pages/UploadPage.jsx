@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
 import {ArrowLeft, Image} from 'lucide-react';
+import {getFilteredFile, FILTER_OPTIONS} from "../service/filterService";
 
 const UploadPage = () => {
 
@@ -11,6 +12,7 @@ const UploadPage = () => {
     const [location, setLocation] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const [selectedFilter, setSelectedFilter] = useState('none');
     const navigate = useNavigate();
 
     const user = JSON.parse(localStorage.getItem('user') || {});
@@ -23,6 +25,7 @@ const UploadPage = () => {
 
             reader.onloadend = () => {
                 setImagePreview(reader.result);
+                setSelectedFilter('none'); // 이미지 변경 시 필터 초기화
             };
 
             reader.readAsDataURL(f);
@@ -38,7 +41,7 @@ const UploadPage = () => {
 
         try {
             setLoading(true);
-            await apiService.createPost(imagePreview, caption, location);
+            await apiService.createPost(selectedImage, caption, location);
             alert("게시물이 성공적으로 등록되었습니다.");
             navigate("/feed");
 
@@ -58,7 +61,7 @@ const UploadPage = () => {
 
     // user.userAvatar 로 가져온 이미지가 엑스 박스일 때
     const avatarImage = user.userAvatar && user.userAvatar.trim() !== '' ?
-        user.userAvatar:'/static/img/default-avatar.jpg';
+        user.userAvatar : '/static/img/default-avatar.jpg';
 
     const handleAvatarError = (e) => {
         e.target.src = '/static/img/default-avatar.jpg';
@@ -82,9 +85,27 @@ const UploadPage = () => {
                 <div className="upload-card">
                     <div className="upload-image-area">
                         {imagePreview ? (
-                            <>
+                            <div style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
                                 <img src={imagePreview}
-                                     className="upload-preview-image"/>
+                                     className="upload-preview-image"
+                                     style={{filter: selectedFilter}}/>
+                                <div className="filter-scroll-container">
+                                    {FILTER_OPTIONS.map((option) => (
+                                        <div key={option.name}
+                                             className={`filter-item
+                                             ${selectedFilter === option.filter ? 'active' : ''}
+                                             `}
+                                             onClick={() => setSelectedFilter(option.filter)}>
+                                            <span className="filter-name">{option.name}</span>
+                                            <div className="filter-thumnail"
+                                                 style={{
+                                                     backgroundImage: `url(${imagePreview})`,
+                                                     filter: option.filter
+                                                 }}>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                                 <label className="upload-change-btn">
                                     이미지변경
                                     <input
@@ -94,7 +115,7 @@ const UploadPage = () => {
                                         className="upload-file-input"
                                     />
                                 </label>
-                            </>
+                            </div>
                         ) : (
                             <label className="upload-label">
                                 <Image className="upload-icon"/>
@@ -144,7 +165,7 @@ const UploadPage = () => {
 
                     <div className="upload-options">
                         <button className="upload-option-btn"
-                                onClick={handleLocationChange} >
+                                onClick={handleLocationChange}>
                             <span className="upload-option-text">{location || '위치 추가'}</span>
                             <span className="upload-option-arrow">›</span>
                         </button>

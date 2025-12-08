@@ -10,6 +10,8 @@
 
 import axios from 'axios';
 
+axios.default.withCredentials = true;
+
 const API_BASE_URL = 'http://localhost:9000/api';
 
 const api = axios.create({
@@ -105,6 +107,13 @@ const apiService = {
     // GET /posts
     getPosts: async () => {
         // TODO: API 호출을 완성하세요
+        try {
+            const res = await api.get("/posts");
+            console.log("res.data : ", res.data)
+            return res.data;
+        } catch(err) {
+            alert("게시물 불러오기 실패");
+        }
     },
 
     // TODO: 특정 게시물 조회
@@ -117,11 +126,15 @@ const apiService = {
     // POST /posts
     // body: { postImage, postCaption, postLocation }
     createPost: async (postImage, postCaption, postLocation) => {
-        // TODO: API 호출을 완성하세요
-        const res = await api.post("/posts", {
-            postImage: postImage,
-            postCaption: postCaption,
-            postLocation: postLocation
+        const formData = new FormData();
+        formData.append('postImage', postImage);
+        formData.append('postCaption', postCaption);
+        formData.append('postLocation', postLocation);
+
+        const res = await api.post("/posts", formData, {
+            headers : {
+                'Content-Type':'multipart/form-data',
+            }
         })
         return res.data;
     },
@@ -172,7 +185,6 @@ const apiService = {
     // TODO: 스토리 목록 조회
     // GET /stories
     getStories: async () => {
-        // TODO: API 호출을 완성하세요
     },
 
     // TODO: 스토리 작성

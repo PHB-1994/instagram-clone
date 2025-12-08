@@ -53,7 +53,7 @@ public class FileUploadService {
 
         String reFileName = UUID.randomUUID().toString() + extension;
 
-        Path saveToPath = Paths.get(   profileUploadPath,                   reFileName);
+        Path saveToPath = Paths.get(profileUploadPath, reFileName);
 
         try {
             Files.copy(file.getInputStream(), saveToPath, StandardCopyOption.REPLACE_EXISTING);
@@ -69,10 +69,9 @@ public class FileUploadService {
 
     public String uploadStoryImage(MultipartFile file, int storyId, String imageType) throws IOException {
 
-        if(file.isEmpty()) {
-            throw new IOException("업로드할 파일이 없습니다");
+        if(file == null || file.isEmpty()){
+            throw new IOException("업로드할 파일이 없습니다.");
         }
-
         String storyFolder = storyUploadPath + "/" + storyId;
 
         File uploadDir = new File(storyFolder);
@@ -104,20 +103,18 @@ public class FileUploadService {
         return "/story_images/" + storyId + "/" + fileName;
     }
 
-    public String uploadPostImage(MultipartFile file, int postId, String imageType) throws IOException {
+    public String uploadPostImage(MultipartFile file) throws IOException {
 
         if(file == null || file.isEmpty()) throw new IOException("업로드할 파일이 없습니다");
 
-        String postFolder = postUploadPath + "/" + postId;
-
-        File uploadDir = new File(postFolder);
+        File uploadDir = new File(postUploadPath);
 
         if(!uploadDir.exists()){
             boolean created = uploadDir.mkdirs();
             if(!created){
-                throw new IOException("포스트 이미지 디렉토리 생성을 실패했습니다." + postFolder);
+                throw new IOException("게시물 이미지 디렉토리 생성을 실패했습니다." + postUploadPath);
             }
-            log.info("포스트 이미지 디렉토리 생성 : {}", postFolder);
+            log.info("게시물 이미지 디렉토리 생성 : {}", postUploadPath);
         }
 
         String clientUploadFileName = file.getOriginalFilename();
@@ -125,20 +122,26 @@ public class FileUploadService {
             throw new IOException("파일 이름이 유효하지 않습니다.");
         }
 
-        String fileName = imageType + clientUploadFileName;
+        String extension = "";
+        int lastDotIndex = clientUploadFileName.lastIndexOf('.');
+        if(lastDotIndex > 0){
+            extension = clientUploadFileName.substring(lastDotIndex);
+        }
 
-        Path saveToPath = Paths.get(postFolder,fileName);
+        String fileName = UUID.randomUUID().toString() + extension;
+
+        Path saveToPath = Paths.get(postUploadPath,fileName);
 
         try {
             Files.copy(file.getInputStream(), saveToPath, StandardCopyOption.REPLACE_EXISTING);
-            log.info("포스트 이미지 업로드 성공 : {} -> {}", file.getOriginalFilename(), fileName);
+            log.info("게시물 이미지 업로드 성공 : {} -> {}", file.getOriginalFilename(), fileName);
 
         } catch(Exception e) {
-            log.error("포스트 이미지 저장 중 오류 발생 : ", e.getMessage());
-            throw new IOException("포스트 이미지 저장에 실패했습니다." + e.getMessage());
+            log.error("게시물이미지 저장 중 오류 발생 : ", e.getMessage());
+            throw new IOException("게시물 이미지 저장에 실패했습니다." + e.getMessage());
         }
 
-        return "/post_images/" + postId + "/" + fileName;
+        return "/post_images/" + fileName;
     }
 
     public boolean deleteFile(String dbPathImg) {
@@ -178,14 +181,6 @@ public class FileUploadService {
 
             if(fileRemove) {
                 log.info("파일 삭제 성공 : {}", absolutePath);
-
-                if(dbPathImg.startsWith("/product_images/")){
-                    if(file.getParentFile().exists()) {
-                        deleteFile("/product_images/" + file.getParentFile().getName());
-                    }
-
-                }
-
             } else {
                 log.error("파일 삭제 실패 : {}", absolutePath);
             }
