@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { X, MoreHorizontal, Heart, Send } from 'lucide-react';
-import apiService from "../service/apiService";
 
 const StoryDetail = () => {
     const navigate = useNavigate();
     const [progress, setProgress] = useState(0);
-
-    const storyId = useParams();
-
-    const loadData = apiService.getUser(storyId);
 
     const storyData = {
         username: "friend_user",
