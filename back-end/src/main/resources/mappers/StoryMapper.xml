@@ -8,8 +8,8 @@
 
     <!-- insertStory 스토리 생성 유저 아이디 스토리이미지 생성일자 -->
     <insert id="insertStory" parameterType="Story" useGeneratedKeys="true" keyProperty="storyId" keyColumn="story_id">
-        INSERT INTO stories(story_id, user_id, story_image, created_at, expires_at)
-        VALUES (#{storyId}, #{userId}, #{stroyImage}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '24 hours')
+        INSERT INTO stories(user_id, story_image, created_at, expires_at)
+        VALUES (#{userId}, #{storyImage}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '24 hours')
     </insert>
 
     <!-- 모든 스토리 조회 -->

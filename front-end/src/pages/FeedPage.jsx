@@ -1,13 +1,3 @@
-// ============================================
-// src/pages/FeedPage.jsx
-// TODO: 피드 페이지 UI 및 기능 구현
-// - posts, stories, loading state 선언
-// - useEffect로 컴포넌트 마운트 시 데이터 로드
-// - loadFeedData 함수: getPosts, getStories 호출
-// - toggleLike 함수: addLike/removeLike 호출 후 목록 새로고침
-// - handleLogout 함수: 확인 후 로그아웃
-// ============================================
-
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
@@ -21,45 +11,46 @@ const FeedPage = () => {
 
     const navigate = useNavigate();
 
-    // TODO: useEffect를 사용하여 컴포넌트 마운트 시 loadFeedData 호출
     useEffect(() => {
         loadFeedData();
     }, []);
 
-    // TODO: loadFeedData 함수를 작성하세요
-    // 1. try-catch 사용
-    // 2. apiService.getPosts()와 apiService.getStories()를 Promise.all로 동시 호출
-    // 3. 받아온 데이터로 posts와 stories state 업데이트
-    // 4. catch: 에러 처리 (console.error, alert)
-    // 5. finally: loading을 false로 설정
     const loadFeedData = async () => {
-        // TODO: 함수를 완성하세요
+        setLoading(true);
+
         try {
-            const loadPosts = await apiService.getPosts();
-            setPosts(loadPosts);
-
+            const postData = await apiService.getPosts();
+            setPosts(postData);
         } catch (error) {
-            alert("게시물을 불러오는데 실패했습니다.");
+            alert("포스트 피드를를 불러오는데 실패했습니다.");
+        } finally {
+            setLoading(false);
+        }
 
+        try {
+            const storiesData = await apiService.getStories();
+            setStories(storiesData);
+        } catch (error) {
+            alert("스토리 피드를 불러오는데 실패했습니다.");
         } finally {
             setLoading(false);
         }
     };
 
-    // TODO: toggleLike 함수를 작성하세요
-    // 1. postId와 isLiked를 파라미터로 받음
-    // 2. isLiked가 true면 removeLike, false면 addLike 호출
-    // 3. 완료 후 getPosts()를 다시 호출하여 목록 새로고침
-    // 4. catch: 에러 처리
     const toggleLike = async (postId, isLiked) => {
-        // TODO: 함수를 완성하세요
+        try {
+            if(isLiked) await apiService.removeLike(postId);
+            else await apiService.addLike(postId);
+
+            const postsData = await apiService.getPosts();
+            setPosts(postsData);
+        } catch(err){
+            alert("좋아요 처리에 실패했습니다.");
+        }
     };
 
-    // TODO: handleLogout 함수를 작성하세요
-    // 1. window.confirm으로 로그아웃 확인
-    // 2. 확인하면 apiService.logout() 호출
     const handleLogout = () => {
-        // TODO: 함수를 완성하세요
+        if(window.confirm('로그아웃 하시겠습니까?')) apiService.logout();
     };
 
     if (loading) {
@@ -83,7 +74,6 @@ const FeedPage = () => {
                         <MessageCircle className="header-icon"/>
                         <PlusSquare className="header-icon"
                                     onClick={() => navigate(('/upload'))}/>
-                        {/* TODO: 아이콘 클릭하면 스토리 업로드로 이동 설정 */}
                         <Film className="header-icon"
                               onClick={() => navigate("/story/upload")}/>
                         <User className="header-icon" onClick={handleLogout}/>
@@ -99,7 +89,7 @@ const FeedPage = () => {
                     <div className="stories-container">
                         <div className="stories-wrapper">
                             {stories.map((story => (
-                                <div key={story.id} className="story-item">
+                                <div key={story.storyId} className="story-item">
                                     <div className="story-avatar-wrapper" key={story.id}>
                                         <img src={story.userAvatar} className="story-avatar"/>
                                     </div>
@@ -113,7 +103,7 @@ const FeedPage = () => {
 
                 {posts.length > 0 && (
                     posts.map((post) => (
-                        <article key={post.id} className="post-card">
+                        <article key={post.postId} className="post-card">
                             <div className="post-header">
                                 <div className="post-user-info">
                                     <img src={post.userAvatar} className="post-user-avatar"/>

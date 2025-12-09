@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
-import {ArrowLeft, Image, X} from 'lucide-react';
+import {ArrowLeft, Image} from 'lucide-react';
 import {getFilteredFile, FILTER_OPTIONS} from '../service/filterService';
 
 const StoryUploadPage = () => {
@@ -41,15 +41,6 @@ const StoryUploadPage = () => {
         }
     };
 
-    // TODO: handlePost 함수를 작성하세요
-    // 1. 입력값 검증: selectedImage가 없으면 alert('이미지를 선택해주세요.') 후 return
-    // 2. try-catch-finally 블록 사용
-    // 3. loading을 true로 설정
-    // 4. getFilteredFile(selectedImage, selectedFilter)로 필터 적용된 이미지 생성
-    // 5. apiService.createStory(filteredImage) 호출
-    // 6. 성공 시: alert('스토리가 성공적으로 업로드되었습니다.'), navigate('/feed')
-    // 7. 실패 시: console.error, alert('스토리 업로드에 실패했습니다.')
-    // 8. finally: loading을 false로 설정
     const handleStory = async () => {
         // TODO: 함수를 완성하세요
         if (!selectedImage) {
@@ -60,6 +51,7 @@ const StoryUploadPage = () => {
         try {
             setLoading(true);
             const filteredImage = await getFilteredFile(selectedImage, selectedFilter);
+            console.log("filteredImage : ", filteredImage)
             await apiService.createStory(filteredImage);
             alert("스토리가 성공적으로 업로드되었습니다.");
             navigate("/feed");
@@ -90,9 +82,7 @@ const StoryUploadPage = () => {
                 <div className="upload-header-content">
                     <button
                         className="upload-back-btn"
-                        onClick={() => {
-                            navigate("/feed")
-                        }}
+                        onClick={() => navigate("/feed")}
                     >
                         <ArrowLeft size={24}/>
                     </button>
@@ -141,7 +131,7 @@ const StoryUploadPage = () => {
                                     {FILTER_OPTIONS.map((option) => (
                                         <div
                                             key={option.name}
-                                            className={`filter-item ${selectedFilter === option.filter ? 'active' : ''}
+                                            className={`filter-item ${setSelectedFilter === option.filter ? 'active' : ''}
                                              `}
                                             onClick={() => {
                                                 setSelectedFilter(option.filter)

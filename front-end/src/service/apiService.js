@@ -1,28 +1,14 @@
-// ============================================
-// src/service/apiService.js
-// TODO: Axios를 이용한 API 호출 함수 작성
-// - axios import 하기
-// - API_BASE_URL 설정 (http://localhost:8080/api)
-// - axios 인스턴스 생성
-// - 요청 인터셉터: 모든 요청에 Authorization 헤더 추가
-// - 응답 인터셉터: 401 에러 시 로그인 페이지로 이동
-// ============================================
-
 import axios from 'axios';
-
-axios.default.withCredentials = true;
 
 const API_BASE_URL = 'http://localhost:9000/api';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
-        'Content-Type':'application/json',
+        'Content-Type': 'application/json',
     }
-})
+});
 
-// TODO: 요청 인터셉터를 설정하세요
-// localStorage에서 token을 가져와서 Authorization 헤더에 추가
 // 모든 요청에 JWT 토큰 추가
 // 사용자의 요청을 가로채다 = interceptor
 api.interceptors.request.use(
@@ -38,15 +24,14 @@ api.interceptors.request.use(
     }
 )
 
-// TODO: 응답 인터셉터를 설정하세요
 // 401 에러가 발생하면 localStorage를 비우고 /login으로 이동
 /*
 401 : 인증 안됨 : 로그인을 안했거나, 토큰 만료
     -> 로그인 페이지로 이동(토큰 만료, 토큰이 임의로 삭제, 잘못된 토큰 = 누군가가 토큰을 임의로 조작)
-403 : 권한 없음 : 로그인은 했지만, 접근할 권한 부족 - 사업자
-    -> 권한 없습니다 알림. 이전 페이지로 돌려보내거나 메인 페이지로 돌려보내기
+403 : 권한 없음 : 로그인은   했지만, 접근할 권한 부족 - 사업자
+    -> 권한 없습니다 알림 이전 페이지로 돌려보내거나 메인 페이지로 돌려보내기
 404 :      없음 : 게시물 / 사용자 / 페이지 없음
-    -> 찾을 수 없습니다 알림. 이전 페이지로 돌려보내거나 메인 페이지로 돌려보내기
+    -> 찾을 수 없습니다 알림 이전 페이지로 돌려보내거나 메인 페이지로 돌려보내기
 500 : 서버 에러 : 서버 문제
     -> 고객센터 연락 방법 띄우기
  */
@@ -55,7 +40,7 @@ api.interceptors.response.use(
         return response;
     },
     error => {
-        if(error.response && error.response.status === 401) {
+        if(error.response && error.response.status === 401){
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login';
@@ -68,25 +53,27 @@ api.interceptors.response.use(
 const apiService = {
     // ===== 인증 API =====
 
-    // POST /auth/signupPage
+    // POST /auth/signup
     // body: { username, email, password, fullName }
     signup: async (username, email, password, fullName) => {
-        const response = await api.post('/auth/signup',{
-            userName : username,
-            userEmail : email,
-            userPassword : password,
-            userFullName : fullName
-        })
+        const response = await api.post('auth/signup', {
+            userName: username,
+            userEmail: email,
+            userPassword: password,
+            userFullname: fullName,
+        });
         return response.data;
+
     },
 
     // POST /auth/login
     // body: { userEmail, password }
     login: async (userEmail, password) => {
         const res = await api.post('/auth/login', {
-            userEmail : userEmail,
-            userPassword : password
-        })
+            userEmail: userEmail,
+            userPassword: password,
+        });
+
         // 토큰과 사용자 정보를 localStorage 저장
         if(res.data.token) {
             localStorage.setItem('token', res.data.token);
@@ -107,13 +94,8 @@ const apiService = {
     // GET /posts
     getPosts: async () => {
         // TODO: API 호출을 완성하세요
-        try {
-            const res = await api.get("/posts");
-            console.log("res.data : ", res.data)
-            return res.data;
-        } catch(err) {
-            alert("게시물 불러오기 실패");
-        }
+        const res = await api.get('/posts');
+        return res.data;
     },
 
     // TODO: 특정 게시물 조회
@@ -126,16 +108,16 @@ const apiService = {
     // POST /posts
     // body: { postImage, postCaption, postLocation }
     createPost: async (postImage, postCaption, postLocation) => {
+
         const formData = new FormData();
         formData.append('postImage', postImage);
         formData.append('postCaption', postCaption);
         formData.append('postLocation', postLocation);
-
-        const res = await api.post("/posts", formData, {
-            headers : {
-                'Content-Type':'multipart/form-data',
+        const res = await  api.post("/posts", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
             }
-        })
+        });
         return res.data;
     },
 
@@ -183,20 +165,19 @@ const apiService = {
     // ===== 스토리 API =====
 
     getStories: async () => {
-        const res = await api.get("/stories");
+        const res = await api.get('/stories');
         return res.data;
     },
 
     createStory: async (storyImage) => {
-        // TODO: API 호출을 완성하세요
         const formData = new FormData();
         formData.append('storyImage', storyImage);
 
-        const res = await api.post("/stories", formData, {
-            headers : {
-                'Content-Type':'multipart/form-data',
+        const res = await api.post('/stories', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
             }
-        })
+        });
         return res.data;
     },
 
@@ -219,11 +200,10 @@ export default apiService;
 
 /*
 export const 기능1번 = () => {}
-
 const 기능2번 = {
-    회원가입기능 : () => {},
-    로그인기능 : () => {}
+     회원가입기능 : () => {},
+     로그인기능 : () => {}
 }
 
-export default 기능2번;
+export  default 기능2번;
  */
