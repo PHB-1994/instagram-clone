@@ -64,7 +64,8 @@ const FeedPage = () => {
 
     return (
         <div className="feed-container">
-            <Header/>
+            <Header
+            type="feed"/>
             <div className="feed-content">
                 {/* TODO: 스토리 섹션 작성 */}
                 {/* stories 배열이 있을 때만 표시 */}
@@ -73,7 +74,7 @@ const FeedPage = () => {
                     <div className="stories-container">
                         <div className="stories-wrapper">
                             {stories.map((story => (
-                                <div key={story.storyId} className="story-item">
+                                <div key={story.storyId} className="story-item" onClick={() => navigate(`/story/detail/${story.storyId}`)}>
                                     <div className="story-avatar-wrapper" key={story.id}>
                                         <img src={story.userAvatar} className="story-avatar"/>
                                     </div>

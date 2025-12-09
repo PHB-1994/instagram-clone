@@ -80,12 +80,12 @@ const StoryUploadPage = () => {
     return (
         <div className="upload-container">
             <Header
-                type="story"
+                type="upload"
                 title="새 스토리"
                 onSubmit={handleStory}
                 submitDisabled={!selectedImage}
                 loading={loading}
-                submitText="공유"/>
+                submitText="공유" />
             <div className="upload-content">
                 <div className="upload-card">
                     <div className="upload-image-area">

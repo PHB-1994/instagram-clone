@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:9000/api';
 
+axios.default.withCredentials = true;
+
 const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -187,6 +189,8 @@ const apiService = {
     // GET /users/:userId
     getUser: async (userId) => {
         // TODO: API 호출을 완성하세요
+        const res = await api.get(`/user/:${userId}`);
+        return res.data;
     },
 
     // TODO: 사용자 게시물 조회
