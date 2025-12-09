@@ -4,6 +4,7 @@ import com.instagram.common.util.JwtUtil;
 import com.instagram.story.model.dto.Story;
 import com.instagram.story.model.service.StoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/stories")
 @RequiredArgsConstructor

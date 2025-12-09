@@ -189,7 +189,8 @@ const apiService = {
     // GET /users/:userId
     getUser: async (userId) => {
         // TODO: API 호출을 완성하세요
-        const res = await api.get(`/user/${userId}`);
+        const res = await api.get(`/stories/user/${userId}`);
+        // console.log("res.data : ", res.data);
         return res.data;
     },
 

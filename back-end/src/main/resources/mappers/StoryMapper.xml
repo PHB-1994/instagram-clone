@@ -19,10 +19,10 @@
     </select>
 
     <!-- 특정 사용자 스토리 조회 -->
-    <select id="selectStoriesByUserId" resultType="Story">
+    <select id="selectStoriesByUserId" resultType="Story" parameterType="int">
         SELECT story_id, user_id, story_image, created_at, expires_at, user_name, user_avatar
         FROM active_stories_view
-        WHERE user_id = #{userId}
+        WHERE story_id = #{storyId}
     </select>
 
     <update id="updateStoryImage" parameterType="Story">

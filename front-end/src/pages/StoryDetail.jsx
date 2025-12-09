@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { X, MoreHorizontal, Heart, Send } from 'lucide-react';
+import apiService from "../service/apiService";
 
 const StoryDetail = () => {
     const navigate = useNavigate();
     const [progress, setProgress] = useState(0);
+
+    const {storyId} = useParams();
+
+    const load = apiService.getUser(storyId);
+
+    // console.log("load : ", load);
+    // const [storyData, setStoryDate] = useState({
+    //     username: '',
+    //     userImage: '',
+    //     storyImage: '',
+    //     uploadedAt: ''
+    // })
 
     const storyData = {
         username: "friend_user",
@@ -29,7 +42,7 @@ const StoryDetail = () => {
         }, intervalTime);
 
         return () => clearInterval(timer);
-    }, [navigate]);
+    }, [storyId]);
 
     return (
         <div className="story-viewer-container">
