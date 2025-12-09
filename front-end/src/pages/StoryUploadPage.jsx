@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
 import {ArrowLeft, Image} from 'lucide-react';
 import {getFilteredFile, FILTER_OPTIONS} from '../service/filterService';
+import Header from "../components/Header";
 
 const StoryUploadPage = () => {
 
@@ -78,28 +79,13 @@ const StoryUploadPage = () => {
 
     return (
         <div className="upload-container">
-            <header className="upload-header">
-                <div className="upload-header-content">
-                    <button
-                        className="upload-back-btn"
-                        onClick={() => navigate("/feed")}
-                    >
-                        <ArrowLeft size={24}/>
-                    </button>
-
-                    <h2 className="upload-title">새 스토리</h2>
-
-                    <button
-                        className="upload-submit-btn"
-                        onClick={handleStory}
-                        disabled={loading || !selectedImage}
-                        style={{opacity: (!selectedImage || loading) ? 0.5 : 1}}
-                    >
-                        {loading ? "업로드 중..." : "공유"}
-                    </button>
-                </div>
-            </header>
-
+            <Header
+                type="story"
+                title="새 스토리"
+                onSubmit={handleStory}
+                submitDisabled={!selectedImage}
+                loading={loading}
+                submitText="공유"/>
             <div className="upload-content">
                 <div className="upload-card">
                     <div className="upload-image-area">

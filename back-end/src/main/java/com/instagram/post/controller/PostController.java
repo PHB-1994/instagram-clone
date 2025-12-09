@@ -50,9 +50,10 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> selectAllPosts(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         int currentUserId = jwtUtil.getUserIdFromToken(token);
-        return postService.getAllPosts(currentUserId);
+        List<Post> posts = postService.getAllPosts(currentUserId);
+        return ResponseEntity.ok(posts);
     }
 }

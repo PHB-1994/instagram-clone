@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
 import {Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Home, PlusSquare, Film, User} from 'lucide-react';
+import Header from "../components/Header";
 
 const FeedPage = () => {
 
@@ -49,9 +50,7 @@ const FeedPage = () => {
         }
     };
 
-    const handleLogout = () => {
-        if(window.confirm('로그아웃 하시겠습니까?')) apiService.logout();
-    };
+
 
     if (loading) {
         return (
@@ -65,22 +64,7 @@ const FeedPage = () => {
 
     return (
         <div className="feed-container">
-            <header className="header">
-                <div className="header-container">
-                    <h1 className="header-title">Instagram</h1>
-                    <div className="header-nav">
-                        <Home className="header-icon"
-                              onClick={() => navigate(('/'))}/>
-                        <MessageCircle className="header-icon"/>
-                        <PlusSquare className="header-icon"
-                                    onClick={() => navigate(('/upload'))}/>
-                        <Film className="header-icon"
-                              onClick={() => navigate("/story/upload")}/>
-                        <User className="header-icon" onClick={handleLogout}/>
-                    </div>
-                </div>
-            </header>
-
+            <Header/>
             <div className="feed-content">
                 {/* TODO: 스토리 섹션 작성 */}
                 {/* stories 배열이 있을 때만 표시 */}
