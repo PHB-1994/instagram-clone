@@ -62,7 +62,6 @@ const FeedPage = () => {
         // TODO: 함수를 완성하세요
     };
 
-    // TODO: loading이 true면 "로딩 중..." 표시
     if (loading) {
         return (
             <div className="feed-container">
@@ -84,7 +83,9 @@ const FeedPage = () => {
                         <MessageCircle className="header-icon"/>
                         <PlusSquare className="header-icon"
                                     onClick={() => navigate(('/upload'))}/>
-                        <Film className="header-icon"/>
+                        {/* TODO: 아이콘 클릭하면 스토리 업로드로 이동 설정 */}
+                        <Film className="header-icon"
+                              onClick={() => navigate("/story/upload")}/>
                         <User className="header-icon" onClick={handleLogout}/>
                     </div>
                 </div>
@@ -118,10 +119,10 @@ const FeedPage = () => {
                                     <img src={post.userAvatar} className="post-user-avatar"/>
                                     <span className="post-username">{post.userName}</span>
                                 </div>
-                                <MoreHorizontal className="post-more-icon" />
+                                <MoreHorizontal className="post-more-icon"/>
                             </div>
 
-                            <img src={post.postImage} className="post-image" />
+                            <img src={post.postImage} className="post-image"/>
                             <div className="post-content">
                                 <div className="post-actions">
                                     <div className="post-actions-left">
@@ -130,10 +131,10 @@ const FeedPage = () => {
                                             onClick={() => toggleLike(post.postId, post.isLiked)}
                                             fill={post.isLiked ? "#ed4956" : "none"}
                                         />
-                                        <MessageCircle className="action-icon" />
-                                        <Send className="action-icon" />
+                                        <MessageCircle className="action-icon"/>
+                                        <Send className="action-icon"/>
                                     </div>
-                                    <Bookmark className="action-icon" />
+                                    <Bookmark className="action-icon"/>
                                 </div>
 
                                 <div className="post-likes">
@@ -150,7 +151,7 @@ const FeedPage = () => {
                                     </button>
                                 )}
                                 <div className="post-time">
-                                    {post.createdAt ||'방금 전'}
+                                    {post.createdAt || '방금 전'}
                                 </div>
                             </div>
                         </article>

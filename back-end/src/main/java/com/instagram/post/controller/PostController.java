@@ -1,4 +1,4 @@
-package com.instagram.story.controller;
+package com.instagram.post.controller;
 
 import com.instagram.common.util.JwtUtil;
 import com.instagram.post.model.dto.Post;
@@ -36,13 +36,12 @@ public class PostController {
         int currentUserID = (int) authentication.getPrincipal();
         post.setUserId(currentUserID);
          */
-
         String token = authHeader.substring(7); // 맨 앞에 "bearer " 만 제거하고 추출 (스페이스바 포함)
         int currentUserId = jwtUtil.getUserIdFromToken(token); // token 에서 userId 추출
+
         boolean success = postService.createPost(postImage, postCaption, postLocation, currentUserId);
 
         // log 사용하여 토큰이랑 currentUserId post 데이터 확인
-
         if(success) {
             return ResponseEntity.ok("success");
         } else {

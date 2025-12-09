@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
 import {ArrowLeft, Image} from 'lucide-react';
-import {getFilteredFile, FILTER_OPTIONS} from "../service/filterService";
+import {FILTER_OPTIONS, getFilteredFile} from "../service/filterService";
 
 const UploadPage = () => {
 
@@ -41,7 +41,10 @@ const UploadPage = () => {
 
         try {
             setLoading(true);
-            await apiService.createPost(selectedImage, caption, location);
+            // 1. 필터가 적용된 이미지 파일 생성한 데이터 변수에 담기
+            const filteredImage = await getFilteredFile(selectedImage,selectedFilter);
+            // 2. 필터가 적용된 이미지를 서버에 전용
+            await apiService.createPost(filteredImage, caption, location);
             alert("게시물이 성공적으로 등록되었습니다.");
             navigate("/feed");
 
