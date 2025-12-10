@@ -24,7 +24,7 @@ public class PostController {
     private final JwtUtil jwtUtil;
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String authHeader) {
 
         String token = authHeader.substring(7);
         int currentUSerId = jwtUtil.getUserIdFromToken(token);
@@ -47,10 +47,10 @@ public class PostController {
         */
         String token = authHeader.substring(7); // 맨 앞 "Bearer "만 제거 하고 추출
         int currentUserId = jwtUtil.getUserIdFromToken(token); // token 에서 userId 추출
-        boolean success = postService.createPost(postImage,postCaption,postLocation, currentUserId);
+        boolean success = postService.createPost(postImage, postCaption, postLocation, currentUserId);
         // log 사용하여 token 과 currentUserId post 데이터 확인
 
-        if(success) {
+        if (success) {
             return ResponseEntity.ok("success");
         } else {
             return ResponseEntity.badRequest().build();
@@ -59,8 +59,8 @@ public class PostController {
 
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Post>> getAllPostsByUserId( @RequestHeader("Authorization") String authHeader,
-                                                           @PathVariable int userId) {
+    public ResponseEntity<List<Post>> getAllPostsByUserId(@RequestHeader("Authorization") String authHeader,
+                                                          @PathVariable int userId) {
 
         try {
             String token = authHeader.substring(7);
@@ -74,32 +74,33 @@ public class PostController {
 
     }
 
-    @PostMapping("/{postId}/like")
-    public boolean addLike(@PathVariable int postId,
-                           @RequestHeader("Authorization") String authHeader) {
+    @PostMapping("{postId}/like")
+    public ResponseEntity<Boolean> addLike(@PathVariable int postId,
+                                           @RequestHeader("Authorization") String authHeader) {
         try {
             String token = authHeader.substring(7);
             int currentUserId = jwtUtil.getUserIdFromToken(token);
+
             boolean result = postService.addLike(postId, currentUserId);
-            return result;
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
-            log.info("좋아요 증가 실패");
-            return false;
+            log.error("좋아요 추가 실패 : {}", e.getMessage());
+            return ResponseEntity.badRequest().body(false);
         }
     }
 
-    // 경로가 같으면 오류 발생할 수 있는지 ...? ================================================
-    @DeleteMapping("/{postId}/like")
-    public boolean removeLike(@PathVariable int postId,
-                              @RequestHeader("Authorization") String authHeader) {
+    @DeleteMapping("{postId}/like")
+    public ResponseEntity<Boolean> removeLike(@PathVariable int postId,
+                                              @RequestHeader("Authorization") String authHeader) {
         try {
             String token = authHeader.substring(7);
             int currentUserId = jwtUtil.getUserIdFromToken(token);
+
             boolean result = postService.removeLike(postId, currentUserId);
-            return result;
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
-            log.info("좋아요 취소 실패");
-            return false;
+            log.error("좋아요 취소 실패 : {}", e.getMessage());
+            return ResponseEntity.badRequest().body(false);
         }
     }
 }

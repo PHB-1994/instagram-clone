@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import StoryUploadPage from "./pages/StoryUploadPage";
 import MyFeedPage from "./pages/MyFeedPage";
 import StoryDetail from "./pages/StoryDetail";
+import EditProfilePage from "./pages/EditProfilePage";
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         const savedUser = localStorage.getItem("user");
         const token = localStorage.getItem("token");
 
-        if(savedUser && token) {
+        if (savedUser && token) {
             return JSON.parse(savedUser);
         }
         return null;
@@ -64,7 +65,17 @@ function App() {
                             <MyFeedPage/>
                         </PrivateRoute>}
                     />
-
+                    {/* TODO 4-1: EditProfilePage 라우트 추가 */}
+                    {/* path="/edit/profile" */}
+                    {/* PrivateRoute로 감싸기 */}
+                    <Route
+                        path="/edit/profile"
+                        element={
+                            <PrivateRoute>
+                                <EditProfilePage/>
+                            </PrivateRoute>
+                        }
+                    />
                 </Routes>
             </BrowserRouter>
         </div>

@@ -14,7 +14,7 @@ const api = axios.create({
 api.interceptors.request.use(
     config => {
         const token = localStorage.getItem('token');
-        if(token){
+        if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -40,7 +40,7 @@ api.interceptors.response.use(
         return response;
     },
     error => {
-        if(error.response && error.response.status === 401){
+        if (error.response && error.response.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login';
@@ -75,7 +75,7 @@ const apiService = {
         });
 
         // 토큰과 사용자 정보를 localStorage 저장
-        if(res.data.token) {
+        if (res.data.token) {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('user', JSON.stringify(res.data.user));
         }
@@ -106,7 +106,7 @@ const apiService = {
         formData.append('postImage', postImage);
         formData.append('postCaption', postCaption);
         formData.append('postLocation', postLocation);
-        const res = await  api.post("/posts", formData, {
+        const res = await api.post("/posts", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -168,7 +168,7 @@ const apiService = {
         return res.data;
     },
 
-    getStory : async (userId) => {
+    getStory: async (userId) => {
         const res = await api.get(`/stories/user/` + userId);
         return res.data;
     },
@@ -191,6 +191,28 @@ const apiService = {
     // GET /users/:userId
     getUser: async (userId) => {
         // TODO: API 호출을 완성하세요
+
+    },
+
+    updateProfile: async (userId, formData) => {
+        try {
+            const res = await api.put('/auth/profile/edit', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            console.log("res.data : ", res.data);
+            if (res.data) {
+                localStorage.setItem('user', JSON.stringify(res.data));
+                const token = localStorage.getItem('token');
+                if (token) {
+                    localStorage.setItem('token', token);
+                }
+            }
+            return res.data;
+        } catch (error) {
+            return Promise.reject(error);
+        }
     },
 
     // TODO: 사용자 게시물 조회

@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import apiService, {API_BASE_URL} from '../service/apiService';
 import {Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Home, PlusSquare, Film, User} from 'lucide-react';
 import Header from "../components/Header";
+import {getImageUrl} from "../service/commonService";
 
 {/*하트를 클릭하면 좋아요 수 증가 */
 }
@@ -73,24 +74,16 @@ const FeedPage = () => {
             /*
             기존에는 백엔드 -> 프론트엔드 변경했다면
             수정내용은 프론트엔드 -> 백엔드 로직
-            // 새로 불러오는걸로 되있어서 DB 저장되기 전에 처리가 되나??? ==========
             // const postsData = await apiService.getPosts();
             // setPosts(postsData);
             */
+
         } catch (err) {
             alert("좋아요 처리에 실패했습니다.");
             loadFeedData(); // 다시 원래대로 돌려놓기
         }
     };
 
-    const getImageUrl = (path) => {
-        if (!path) return '/static/img/default-avatar.jpg';
-        if (path.startsWith('http')) return path;
-        if (path === 'default-avatar.jpg') return '/static/img/default-avatar.jpg';
-        if (path === 'default-avatar.png') return '/static/img/default-avatar.jpg';
-
-        return `${API_BASE_URL}${path}`;
-    }
 
     if (loading) {
         return (

@@ -1,5 +1,6 @@
 package com.instagram.user.model.service;
 
+import com.instagram.common.util.FileUploadService;
 import com.instagram.user.model.dto.User;
 import com.instagram.user.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -15,6 +20,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final FileUploadService fileUploadService;
 
     @Override
     public void signup(User user) {
@@ -76,5 +82,41 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserByUserName(String userName) {
         return null;
+    }
+
+    @Override
+    public User getUserById(int userId) {
+        return userMapper.selectUserById(userId);
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(User user, MultipartFile file) {
+
+        User existingUser = userMapper.selectUserById(user.getUserId());
+        if(existingUser == null){
+            throw new RuntimeException("사용자 정보를 찾을 수 없습니다.");
+        }
+
+        if(file != null &&  !file.isEmpty()) {
+            try{
+                String newAvatarPath = fileUploadService.uploadProfileImage(file);
+                existingUser.setUserAvatar(newAvatarPath);
+            }catch (Exception e){
+                log.error("프로필 이미지 수정 중 오류 발생 : {}", e);
+                throw new RuntimeException("이미지 업로드 실패");
+            }
+        }
+
+        if(user.getUserName() != null) existingUser.setUserName(user.getUserName());
+        if(user.getUserEmail() != null) existingUser.setUserEmail(user.getUserEmail());
+        if(user.getUserPassword() != null) existingUser.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        if(user.getUserFullname() != null) existingUser.setUserFullname(user.getUserFullname());
+
+        // 5. DB 업데이트 작업
+        userMapper.updateUser(existingUser);
+
+        existingUser.setUserPassword(null);
+        return existingUser;
     }
 }
