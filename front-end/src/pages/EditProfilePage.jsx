@@ -23,11 +23,10 @@ const EditProfilePage = () => {
         loadUserData();
     }, []);
 
-    // TODO 3-6: loadUserData 함수 작성
     const loadUserData = async () => {
         try {
             const user = JSON.parse(localStorage.getItem('user'));
-            if (!user) return navigate('/login');
+            if (!user) navigate('/login');
             // await apiService.getUser(user.userId); -> localstorage 존재하기 때문에 필요하지 않음
 
             setUser(user);
@@ -52,7 +51,6 @@ const EditProfilePage = () => {
         }
     };
 
-    // TODO 3-8: handleChange 함수 작성
     const handleChange = (e) => {
         const {name, value} = e.target.value;
 
@@ -62,7 +60,6 @@ const EditProfilePage = () => {
         }))
     };
 
-    // TODO 3-9: handleSubmit 함수 작성
     const handleSubmit = async () => {
         if (!user) return;
         setLoading(true);
