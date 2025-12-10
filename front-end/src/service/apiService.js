@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:9000/api';
+export const API_BASE_URL = 'http://localhost:9000/api';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -92,6 +92,7 @@ const apiService = {
 
     getPosts: async () => {
         const res = await api.get('/posts');
+        // console.log(res.data);
         return res.data;
     },
 
@@ -125,12 +126,18 @@ const apiService = {
     // POST /posts/:postId/like
     addLike: async (postId) => {
         // TODO: API 호출을 완성하세요
+        const res = await api.post(`/posts/${postId}/like`);
+        // console.log("res.data : ", res.data);
+        return res.data;
     },
 
     // TODO: 좋아요 취소
     // DELETE /posts/:postId/like
     removeLike: async (postId) => {
         // TODO: API 호출을 완성하세요
+        const res = await api.delete(`/posts/${postId}/like`);
+        // console.log("res.data : ", res.data);
+        return res.data;
     },
 
     // ===== 댓글 API =====
@@ -162,7 +169,7 @@ const apiService = {
     },
 
     getStory : async (userId) => {
-        const res = await api.get(`/stories/user/${userId}`);
+        const res = await api.get(`/stories/user/` + userId);
         return res.data;
     },
 

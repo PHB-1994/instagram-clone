@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
@@ -12,6 +12,17 @@ import StoryDetail from "./pages/StoryDetail";
 
 
 function App() {
+
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
+
+        if(savedUser && token) {
+            return JSON.parse(savedUser);
+        }
+        return null;
+    })
+
     return (
         <div>
             <BrowserRouter>
@@ -26,7 +37,7 @@ function App() {
                                </PrivateRoute>}
                     />
                     <Route
-                        path="/story/detail/:storyId"
+                        path="/story/detail/:userId"
                         element={
                             <PrivateRoute>
                                 <StoryDetail/>

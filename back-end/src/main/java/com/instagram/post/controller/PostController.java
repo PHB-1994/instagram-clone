@@ -73,4 +73,33 @@ public class PostController {
         }
 
     }
+
+    @PostMapping("/{postId}/like")
+    public boolean addLike(@PathVariable int postId,
+                           @RequestHeader("Authorization") String authHeader) {
+        try {
+            String token = authHeader.substring(7);
+            int currentUserId = jwtUtil.getUserIdFromToken(token);
+            boolean result = postService.addLike(postId, currentUserId);
+            return result;
+        } catch (Exception e) {
+            log.info("좋아요 증가 실패");
+            return false;
+        }
+    }
+
+    // 경로가 같으면 오류 발생할 수 있는지 ...? ================================================
+    @DeleteMapping("/{postId}/like")
+    public boolean removeLike(@PathVariable int postId,
+                              @RequestHeader("Authorization") String authHeader) {
+        try {
+            String token = authHeader.substring(7);
+            int currentUserId = jwtUtil.getUserIdFromToken(token);
+            boolean result = postService.removeLike(postId, currentUserId);
+            return result;
+        } catch (Exception e) {
+            log.info("좋아요 취소 실패");
+            return false;
+        }
+    }
 }
