@@ -40,16 +40,15 @@ const FeedPage = () => {
 
     const toggleLike = async (postId, isLiked) => {
         try {
-            if(isLiked) await apiService.removeLike(postId);
+            if (isLiked) await apiService.removeLike(postId);
             else await apiService.addLike(postId);
 
             const postsData = await apiService.getPosts();
             setPosts(postsData);
-        } catch(err){
+        } catch (err) {
             alert("좋아요 처리에 실패했습니다.");
         }
     };
-
 
 
     if (loading) {
@@ -64,23 +63,27 @@ const FeedPage = () => {
 
     return (
         <div className="feed-container">
-            <Header
-            type="feed"/>
+            <Header />
+
             <div className="feed-content">
-                {/* TODO: 스토리 섹션 작성 */}
-                {/* stories 배열이 있을 때만 표시 */}
-                {/* stories.map으로 각 스토리를 렌더링 */}
                 {stories.length > 0 && (
                     <div className="stories-container">
                         <div className="stories-wrapper">
-                            {stories.map((story => (
-                                <div key={story.storyId} className="story-item" onClick={() => navigate(`/story/detail/${story.storyId}`)}>
-                                    <div className="story-avatar-wrapper" key={story.id}>
-                                        <img src={story.userAvatar} className="story-avatar"/>
+                            {stories.map((story) => (
+                                <div key={story.storyId}
+                                     className="story-item"
+                                     onClick={() => navigate(`/story/detail/${story.storyId}`)}
+                                >
+                                    <div className="story-avatar-wrapper"
+                                         key={story.id}>
+                                        <img src={story.userAvatar}
+                                             className="story-avatar"/>
                                     </div>
-                                    <span className="story-username">{story.userName}</span>
+                                    <span className="story-username">
+                                        {story.userName}
+                                    </span>
                                 </div>
-                            )))}
+                            ))}
                         </div>
                     </div>
                 )}
@@ -94,10 +97,10 @@ const FeedPage = () => {
                                     <img src={post.userAvatar} className="post-user-avatar"/>
                                     <span className="post-username">{post.userName}</span>
                                 </div>
-                                <MoreHorizontal className="post-more-icon"/>
+                                <MoreHorizontal className="post-more-icon" />
                             </div>
 
-                            <img src={post.postImage} className="post-image"/>
+                            <img src={post.postImage} className="post-image" />
                             <div className="post-content">
                                 <div className="post-actions">
                                     <div className="post-actions-left">
@@ -106,10 +109,10 @@ const FeedPage = () => {
                                             onClick={() => toggleLike(post.postId, post.isLiked)}
                                             fill={post.isLiked ? "#ed4956" : "none"}
                                         />
-                                        <MessageCircle className="action-icon"/>
-                                        <Send className="action-icon"/>
+                                        <MessageCircle className="action-icon" />
+                                        <Send className="action-icon" />
                                     </div>
-                                    <Bookmark className="action-icon"/>
+                                    <Bookmark className="action-icon" />
                                 </div>
 
                                 <div className="post-likes">
@@ -126,13 +129,12 @@ const FeedPage = () => {
                                     </button>
                                 )}
                                 <div className="post-time">
-                                    {post.createdAt || '방금 전'}
+                                    {post.createdAt ||'방금 전'}
                                 </div>
                             </div>
                         </article>
                     ))
                 )}
-                {/* TODO: 게시물이 없을 때 메시지 표시 */}
             </div>
         </div>
     );

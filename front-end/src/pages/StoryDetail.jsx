@@ -1,30 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import { X, MoreHorizontal, Heart, Send } from 'lucide-react';
+import {X, MoreHorizontal, Heart, Send} from 'lucide-react';
 import apiService from "../service/apiService";
 
+// story 의 경우 상대방의 스토리를 다른 유저가 선택해서 보는 것이 아니라
+// 유저가 올린 스토리를 오래된 순서부터 하나씩 보여짐 어떤 스토리와 스토리가 얼만큼 있는지
+// 유저 프로필을 클릭하지 않으면 알 수 없다.
 const StoryDetail = () => {
     const navigate = useNavigate();
     const [progress, setProgress] = useState(0);
+    const {userId} = useParams();
+    // List -> {}
+    const [storyData, setStoryData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
 
-    const {storyId} = useParams();
+    // userId -> storyId
+    useEffect(() => {
+        loadStoryData()
+    }, [userId]);
 
-    const load = apiService.getUser(storyId);
-
-    // console.log("load : ", load);
-    // const [storyData, setStoryDate] = useState({
-    //     username: '',
-    //     userImage: '',
-    //     storyImage: '',
-    //     uploadedAt: ''
-    // })
-
-    const storyData = {
-        username: "friend_user",
-        userImage: "https://via.placeholder.com/50",
-        storyImage: "https://picsum.photos/600/1000",
-        uploadedAt: "12시간"
-    };
+    const loadStoryData = async () => {
+        try {
+            setLoading(true);
+            const data = await apiService.getStory(userId);
+            setStoryData(data);
+        } catch(err) {
+            alert("스토리를 불러오는데 실패했습니다.");
+            navigate('/feed');
+        }finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
         const duration = 5000;
@@ -42,13 +49,13 @@ const StoryDetail = () => {
         }, intervalTime);
 
         return () => clearInterval(timer);
-    }, [storyId]);
+    }, [navigate]);
 
     return (
         <div className="story-viewer-container">
             <div
                 className="story-bg-blur"
-                style={{backgroundImage: `url(${storyData.storyImage})`}}
+                style={{backgroundImage: `url(${storyData.userAvatar})`}}
             />
 
             <div className="story-content-box">
@@ -60,9 +67,9 @@ const StoryDetail = () => {
 
                 <div className="story-header-info">
                     <div className="story-user">
-                        <img src={storyData.userImage} alt="user" className="story-user-avatar" />
+                        <img src={storyData.userAvatar} alt="user" className="story-user-avatar"/>
                         <span className="story-username">{storyData.username}</span>
-                        <span className="story-time">{storyData.uploadedAt}</span>
+                        <span className="story-time">{storyData.createdAt}</span>
                     </div>
                     <div className="story-header-actions">
                         <MoreHorizontal color="white" className="story-icon"/>
@@ -74,7 +81,7 @@ const StoryDetail = () => {
                     </div>
                 </div>
 
-                <img src={storyData.storyImage} alt="story" className="story-main-image" />
+                <img src={storyData.storyImage} alt="story" className="story-main-image"/>
 
                 <div className="story-footer">
                     <div className="story-input-container">
@@ -84,8 +91,8 @@ const StoryDetail = () => {
                             className="story-message-input"
                         />
                     </div>
-                    <Heart color="white" className="story-icon" />
-                    <Send color="white" className="story-icon" />
+                    <Heart color="white" className="story-icon"/>
+                    <Send color="white" className="story-icon"/>
                 </div>
             </div>
         </div>

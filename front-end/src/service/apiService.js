@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:9000/api';
 
-axios.default.withCredentials = true;
-
 const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -92,25 +90,17 @@ const apiService = {
 
     // ===== 게시물 API =====
 
-    // TODO: 모든 게시물 조회
-    // GET /posts
     getPosts: async () => {
-        // TODO: API 호출을 완성하세요
         const res = await api.get('/posts');
         return res.data;
     },
 
-    // TODO: 특정 게시물 조회
-    // GET /posts/:postId
-    getPost: async (postId) => {
-        // TODO: API 호출을 완성하세요
+    getPost: async (userId) => {
+        const res = await api.get('/posts/' + userId);
+        return res.data;
     },
 
-    // TODO: 게시물 작성
-    // POST /posts
-    // body: { postImage, postCaption, postLocation }
     createPost: async (postImage, postCaption, postLocation) => {
-
         const formData = new FormData();
         formData.append('postImage', postImage);
         formData.append('postCaption', postCaption);
@@ -171,6 +161,11 @@ const apiService = {
         return res.data;
     },
 
+    getStory : async (userId) => {
+        const res = await api.get(`/stories/user/${userId}`);
+        return res.data;
+    },
+
     createStory: async (storyImage) => {
         const formData = new FormData();
         formData.append('storyImage', storyImage);
@@ -189,9 +184,6 @@ const apiService = {
     // GET /users/:userId
     getUser: async (userId) => {
         // TODO: API 호출을 완성하세요
-        const res = await api.get(`/stories/user/${userId}`);
-        // console.log("res.data : ", res.data);
-        return res.data;
     },
 
     // TODO: 사용자 게시물 조회
