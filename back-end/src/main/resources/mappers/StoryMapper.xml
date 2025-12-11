@@ -32,6 +32,13 @@
         ORDER BY created_at ASC
     </select>
 
+    <!-- 특정 스토리 조회 -->
+    <select id="selectStoryById" resultType="Story" parameterType="int">
+        SELECT story_id, user_id, story_image, created_at
+        FROM stories
+        WHERE story_id = #{storyId}
+    </select>
+
     <update id="updateStoryImage" parameterType="Story">
         UPDATE stories
         SET story_image = #{storyImage}
@@ -39,7 +46,9 @@
     </update>
 
     <!-- 만료된 스토리는 삭제가 되는 것일까? 안보이고 보관처리가 되는 것일까? -->
-    <!--    <delete id="deleteStories">-->
-    <!--    -->
-    <!--    </delete>-->
+    <delete id="deleteStory" parameterType="int">
+        DELETE
+        FROM stories
+        WHERE story_id = #{storyId}
+    </delete>
 </mapper>

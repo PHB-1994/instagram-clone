@@ -24,7 +24,10 @@ const StoryDetail = () => {
     }, [userId]);
 
 
+
+
     const loadStoryData = async () => {
+
         try {
             setLoading(true);
             const data = await apiService.getStory(userId);
@@ -118,12 +121,17 @@ const StoryDetail = () => {
     if (loading) return <div>로딩중</div>;
 
     // 현재 스토리에 따른 유저정보와 스토리 아이디
-    const currnetStory = stories[currnetIndex];
+    const currentStory = stories[currnetIndex];
+
+    console.log("userId : ", userId);
+    console.log("currentStory.userId : ", currentStory.userId);
 
     const handleDeleteStory = async () => {
         try {
             // deleteStory 에 현재 스토리 id 를 전달하여 스토리 삭제 sql delete 처리하기
             // controller deleteStory
+            // console.log("currentStory.storyId : ", currentStory.storyId);
+            await apiService.deleteStory(currentStory.storyId);
 
             // 삭제 후 스토리 목록에서 제거
             const updateStories = stories.filter((_, index) => index !== currnetIndex)
@@ -150,7 +158,7 @@ const StoryDetail = () => {
         <div className="story-viewer-container" onClick={handleScreenClick}> {/* 스토리 전체 화면에서 클릭이 일어날 수 있다. */}
             <div
                 className="story-bg-blur"
-                style={{backgroundImage: `url(${getImageUrl(currnetStory.storyImage)})`}}
+                style={{backgroundImage: `url(${getImageUrl(currentStory.storyImage)})`}}
             />
 
             <div className="story-content-box">
@@ -173,12 +181,13 @@ const StoryDetail = () => {
 
                 <div className="story-header-info">
                     <div className="story-user">
-                        <img src={getImageUrl(currnetStory.userAvatar)}
+                        <img src={getImageUrl(currentStory.userAvatar)}
                              alt="user"
                              className="story-user-avatar"/>
-                        <span className="story-username">{currnetStory.username}</span>
-                        <span className="story-time">{formatDate(currnetStory.createdAt, "relative")}</span>
+                        <span className="story-username">{currentStory.username}</span>
+                        <span className="story-time">{formatDate(currentStory.createdAt, "relative")}</span>
                     </div>
+                        {/* 본인일 때만 스토리 삭제 아이콘 보이기 */}
                     <div className="story-header-actions">
                         <MoreHorizontal
                             color="white"
@@ -186,6 +195,11 @@ const StoryDetail = () => {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setShowDeleteModal(true);
+                            }}
+                            style={{
+                                cursor: 'pointer',
+                                display: currentStory.userId === userId
+                                ? 'block' : 'none'
                             }}
                         />
                         <X
@@ -197,9 +211,30 @@ const StoryDetail = () => {
                             }}
                         />
                     </div>
+                    {/*{currentStory.userId === userId ?*/}
+                    {/*    (*/}
+                    {/*        <div className="story-header-actions">*/}
+                    {/*            <MoreHorizontal*/}
+                    {/*                color="white"*/}
+                    {/*                className="story-icon"*/}
+                    {/*                onClick={(e) => {*/}
+                    {/*                    e.stopPropagation();*/}
+                    {/*                    setShowDeleteModal(true);*/}
+                    {/*                }}*/}
+                    {/*            />*/}
+                    {/*            <X*/}
+                    {/*                color="white"*/}
+                    {/*                className="story-icon"*/}
+                    {/*                onClick={(e) => {*/}
+                    {/*                    e.stopPropagation();*/}
+                    {/*                    navigate(-1)*/}
+                    {/*                }}*/}
+                    {/*            />*/}
+                    {/*        </div>*/}
+                    {/*    ): ""}*/}
                 </div>
 
-                <img src={getImageUrl(currnetStory.storyImage)}
+                <img src={getImageUrl(currentStory.storyImage)}
                      alt="story"
                      className="story-main-image"/>
                 {currnetIndex > 0 && (

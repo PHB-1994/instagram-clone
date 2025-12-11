@@ -15,13 +15,19 @@ import EditProfilePage from "./pages/EditProfilePage";
 function App() {
 
     const [user, setUser] = useState(() => {
-        const savedUser = localStorage.getItem("user");
-        const token = localStorage.getItem("token");
+        try {
+            const savedUser = localStorage.getItem("user");
+            const token = localStorage.getItem("token");
 
-        if (savedUser && token) {
-            return JSON.parse(savedUser);
+            if (savedUser && token) {
+                return JSON.parse(savedUser);
+            }
+            return null;
+        } catch(err){
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            return null;
         }
-        return null;
     })
 
     return (

@@ -14,5 +14,7 @@ public interface StoryService {
 
     List<Story> getStoriesByUserId(int userId);
 
-    void deleteExpiredStories();
+    void deleteExpiredStories(int storyId);
+
+    void deleteStory(int storyId);
 }

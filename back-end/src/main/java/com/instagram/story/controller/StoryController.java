@@ -64,4 +64,14 @@ public class StoryController {
             return ResponseEntity.badRequest().body("스토리 조회 실패 : "+e.getMessage());
         }
     }
+
+    @DeleteMapping("/{storyId}")
+    public ResponseEntity<?> deleteStory(@PathVariable("storyId") int storyId){
+        try {
+            storyService.deleteStory(storyId);
+            return ResponseEntity.ok(true);
+        } catch(Exception e){
+            return ResponseEntity.badRequest().body("스토리 삭제 실패 : " + e.getMessage());
+        }
+    }
 }
