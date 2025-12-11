@@ -47,9 +47,9 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Override
-    public Story getStoriesByUserId(int userId) {
+    public List<Story> getStoriesByUserId(int userId) {
         log.info("특정 사용자 스토리 조회 - 사용자 ID : {}", userId);
-        Story story = storyMapper.selectStoriesByUserId(userId);
+        List<Story> story = storyMapper.selectStoriesByUserId(userId);
         log.info("story : {}", story);
         return story;
     }

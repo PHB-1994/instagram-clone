@@ -57,11 +57,11 @@ public class StoryController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getStory(@PathVariable("userId") int userId){
-        try {
-            Story a = storyService.getStoriesByUserId(userId);
-            return ResponseEntity.ok(a);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("스토리 조회 실패 : " + e.getMessage());
+        try{
+            List<Story> a = storyService.getStoriesByUserId(userId);
+            return  ResponseEntity.ok(a);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("스토리 조회 실패 : "+e.getMessage());
         }
     }
 }

@@ -1531,3 +1531,68 @@ body {
         margin-left: 140px;
     }
 }
+
+/*==========================================*/
+/*==========================================*/
+
+.story-nav-hint {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.story-nav-left {
+    left: 20px;
+}
+
+.story-nav-right {
+    right: 20px;
+}
+
+.story-viewer-container:hover .story-nav-hint {
+    opacity: 0.6;
+}
+
+.story-counter {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    z-index: 10;
+}
+
+.story-progress-wrapper {
+    display: flex;
+    gap: 4px;
+}
+
+.story-progress-bar {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .story-content-box {
+        max-width: 100%;
+    }
+
+    .story-header-info {
+        top: 16px;
+    }
+
+    .story-footer {
+        padding: 12px;
+    }
+
+    .story-nav-hint {
+        display: none;
+    }
+}

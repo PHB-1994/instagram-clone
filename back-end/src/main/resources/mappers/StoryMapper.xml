@@ -6,7 +6,13 @@
 
 <mapper namespace="com.instagram.story.model.mapper.StoryMapper">
 
-    <!-- insertStory 스토리 생성 유저 아이디 스토리이미지 생성일자 -->
+    <!--
+    insertStory 스토리 생성 유저 아이디 스토리이미지 생성일자
+    story_id 를 작성할 경우 클라이언트가 작성한 스토리 아이디를 넘겨준다.
+    그런데 프론트온드에서 백엔드로 받아온 스토리 아이디가 없으며, story_id 측이 int 일 경우
+    story_id 값은 null 대신 0 값이 자동으로 추가
+    story_id 를 제거하고 자동으로 번호 설정되도록 하기!
+    -->
     <insert id="insertStory" parameterType="Story" useGeneratedKeys="true" keyProperty="storyId" keyColumn="story_id">
         INSERT INTO stories(user_id, story_image, created_at, expires_at)
         VALUES (#{userId}, #{storyImage}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '24 hours')
@@ -22,7 +28,8 @@
     <select id="selectStoriesByUserId" resultType="Story" parameterType="int">
         SELECT story_id, user_id, story_image, created_at, expires_at, user_name, user_avatar
         FROM active_stories_view
-        WHERE story_id = #{storyId}
+        WHERE user_id = #{userId}
+        ORDER BY created_at ASC
     </select>
 
     <update id="updateStoryImage" parameterType="Story">
