@@ -125,6 +125,7 @@ const StoryDetail = () => {
 
     console.log("userId : ", userId);
     console.log("currentStory.userId : ", currentStory.userId);
+    console.log("localStorage.userId : ", localStorage.userId);
 
     const handleDeleteStory = async () => {
         try {
@@ -199,7 +200,8 @@ const StoryDetail = () => {
                             style={{
                                 cursor: 'pointer',
                                 display: currentStory.userId === userId
-                                ? 'block' : 'none'
+                                    ? 'block'
+                                    : 'none'
                             }}
                         />
                         <X
@@ -207,7 +209,7 @@ const StoryDetail = () => {
                             className="story-icon"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                navigate(-1)
+                                navigate(-1);
                             }}
                         />
                     </div>

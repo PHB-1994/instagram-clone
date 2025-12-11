@@ -22,11 +22,7 @@ const MyFeedPage = () => {
         setLoading(true);
 
         try {
-
-
-
             if (!userId) return navigate('/login');
-
             /*
             불필요한 게시물을 모두 가져온 후 필터 작업을 진행해야하므로
             나의 게시물만 가져오는 api를 이용하여 나의 게시물 피드 가져오도록 변경

@@ -10,6 +10,7 @@ import StoryUploadPage from "./pages/StoryUploadPage";
 import MyFeedPage from "./pages/MyFeedPage";
 import StoryDetail from "./pages/StoryDetail";
 import EditProfilePage from "./pages/EditProfilePage";
+import KaKaoCallback from "./pages/KaKaoCallback";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navigate to="/login" replace/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/auth/kakao/callback" element={<KaKaoCallback/>}/>
                     <Route path="/signup" element={<SignupPage/>}/>
                     <Route path="/feed"
                            element={
