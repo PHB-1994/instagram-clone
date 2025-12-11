@@ -6,36 +6,41 @@
 
 <mapper namespace="com.instagram.user.model.mapper.UserMapper">
 
+    <!-- 유저 전체 조회 -->
     <select id="selectAllUsers" resultType="User">
         SELECT *
         FROM users
         ORDER BY user_id DESC
     </select>
 
+    <!-- 유저 id 로 조회 -->
     <select id="selectUserById" parameterType="int" resultType="User">
         SELECT *
         FROM users
         WHERE user_id = #{userId}
     </select>
 
+    <!-- 이름으로 유저 조회 -->
     <select id="selectUserByUserName" parameterType="User" resultType="String">
         SELECT user_name
         FROM users
         WHERE user_name = #{userName}
     </select>
 
+    <!-- 이메일로 유저 조회  -->
     <select id="selectUserByUserEmail" parameterType="String" resultType="User">
         SELECT *
         FROM users
         WHERE user_email = #{userEmail}
     </select>
 
-
+    <!-- 유저 등록 -->
     <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO users (user_name, user_email, user_password, user_fullname, user_avatar)
         VALUES (#{userName}, #{userEmail}, #{userPassword}, #{userFullname}, #{userAvatar})
     </insert>
 
+    <!-- 유저 수정 -->
     <update id="updateUser" parameterType="User">
         UPDATE users
         SET user_name = #{userName},
@@ -46,10 +51,17 @@
         WHERE user_id = #{userId}
     </update>
 
+    <!-- 유저 삭제 -->
     <delete id="deleteUser" parameterType="User">
         DELETE
         FROM users
         WHERE user_id = #{userId}
     </delete>
 
+    <!-- 유저 이름으로 찾기 -->
+    <select id="searchUsersByUserName" parameterType="String" resultType="String">
+        SELECT user_name
+        FROM users
+        WHERE user_name LIKE '%' || #{keyword} ||'%'
+    </select>
 </mapper>

@@ -1,76 +1,63 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
-import {ArrowLeft, Image} from 'lucide-react';
-import {FILTER_OPTIONS, getFilteredFile} from "../service/filterService";
+import {Image} from 'lucide-react';
+import {getFilteredFile, FILTER_OPTIONS} from "../service/filterService";
 import Header from "../components/Header";
+import MentionInput from "../components/MentionInput";
 
-// 필요에 따라 소비자가 업로드한 이미지를 리사이즈 처리화 해야할 수 있다.
-// 예 -> 10MB 이상의 이미지를 올리면 8MB 이하의 이미지로 사이즈 축소 or 크기 축소
 const UploadPage = () => {
-
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [caption, setCaption] = useState('');
     const [location, setLocation] = useState('');
     const [loading, setLoading] = useState(false);
-
     const [selectedFilter, setSelectedFilter] = useState('none');
-    const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem('user') || {});
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const handleImageChange = (e) => {
         const f = e.target.files[0];
         if (f) {
             setSelectedImage(f);
             const reader = new FileReader();
-
             reader.onloadend = () => {
                 setImagePreview(reader.result);
-                setSelectedFilter('none'); // 이미지 변경 시 필터 초기화
+                setSelectedFilter('none');
             };
-
             reader.readAsDataURL(f);
         }
     };
 
     const handlePost = async () => {
-        // TODO: 함수를 완성하세요
         if (!selectedImage || !caption.trim()) {
             alert("이미지와 캡션을 입력해주세요.");
             return;
         }
-
         try {
             setLoading(true);
-            // 1. 필터가 적용된 이미지 파일 생성한 데이터 변수에 담기
             const filteredImage = await getFilteredFile(selectedImage, selectedFilter);
-            // 2. 필터가 적용된 이미지를 서버에 전용
             await apiService.createPost(filteredImage, caption, location);
             alert("게시물이 성공적으로 등록되었습니다.");
-            navigate("/feed");
-
+            navigate("/feed")
         } catch (err) {
             alert("게시물 등록에 실패했습니다.");
-
         } finally {
             setLoading(false);
         }
-
     };
 
     const handleLocationChange = () => {
         const loc = prompt('위치를 입력하세요.');
-        if (loc) setLocation(loc);
+        if(loc) setLocation(loc);
     }
 
-    // user.userAvatar 로 가져온 이미지가 엑스 박스일 때
-    const avatarImage = user.userAvatar && user.userAvatar.trim() !== '' ?
+    const avatarImage = user.userAvatar && user.userAvatar.trim() !== ''?
         user.userAvatar : '/static/img/default-avatar.jpg';
 
     const handleAvatarError = (e) => {
-        e.target.src = '/static/img/default-avatar.jpg';
+        e.target.src ='/static/img/default-avatar.jpg';
     }
 
     return (
@@ -81,34 +68,37 @@ const UploadPage = () => {
                 onSubmit={handlePost}
                 submitDisabled={!selectedImage || !caption.trim()}
                 loading={loading}
-                submitText="공유"/>
+                submitText={"공유"} />
+
             <div className="upload-content">
                 <div className="upload-card">
                     <div className="upload-image-area">
                         {imagePreview ? (
-                            <div style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
-                                <img src={imagePreview}
-                                     className="upload-preview-image"
-                                     style={{filter: selectedFilter}}/>
+                            <div style={{width:'100%', display:'flex', flexDirection:'column'}}>
+                                <img
+                                    src={imagePreview}
+                                    className="upload-preview-image"
+                                    style={{filter: selectedFilter}}
+                                />
                                 <div className="filter-scroll-container">
                                     {FILTER_OPTIONS.map((option) => (
                                         <div key={option.name}
                                              className={`filter-item
-                                             ${selectedFilter === option.filter ? 'active' : ''}
-                                             `}
-                                             onClick={() => setSelectedFilter(option.filter)}>
+                                                ${selectedFilter === option.filter ?'active':''}  `}
+                                             onClick={() => setSelectedFilter(option.filter)}
+                                        >
                                             <span className="filter-name">{option.name}</span>
-                                            <div className="filter-thumnail"
+                                            <div className="filter-thumbnail"
                                                  style={{
-                                                     backgroundImage: `url(${imagePreview})`,
-                                                     filter: option.filter
-                                                 }}>
-                                            </div>
+                                                     backgroundImage:`url(${imagePreview})`,
+                                                     filter: option.filter,
+                                                 }}
+                                            />
                                         </div>
                                     ))}
                                 </div>
                                 <label className="upload-change-btn">
-                                    이미지변경
+                                    이미지 변경
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -119,37 +109,44 @@ const UploadPage = () => {
                             </div>
                         ) : (
                             <label className="upload-label">
-                                <Image className="upload-icon"/>
+                                <Image className="upload-icon" />
                                 <span className="upload-text">
                                     사진을 선택하세요.
                                 </span>
                                 <span className="upload-select-btn">
                                     컴퓨터에서 선택
                                 </span>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
-                                    className="upload-file-input"
+                                <input type="file"
+                                       accept="image/*"
+                                       onChange={handleImageChange}
+                                       className="upload-file-input"
                                 />
-                            </label>
-                        )}
+                            </label>)
+                        }
                     </div>
 
-                    {/* TODO: 캡션 입력 영역 작성 */}
                     <div className="upload-caption-area">
                         <div className="upload-caption-content">
-                            {/* TODO: 프로필 이미지 표시 */}
-                            <img
-                                className="upload-user-avatar"
-                                src={avatarImage}
-                                onError={handleAvatarError}
+                            <img className="upload-user-avatar"
+                                 src={avatarImage}
+                                 onError={handleAvatarError}
                             />
-
                             <div className="upload-caption-right">
                                 <div className="upload-username">
                                     {user.userName}
                                 </div>
+
+                                {/* TODO 11: 기존 textarea를 MentionInput으로 교체 */}
+                                {/*
+                                    요구사항:
+                                    1. 기존 textarea 주석 처리
+                                    2. <MentionInput /> 사용
+                                    3. props 전달:
+                                       - value={caption}
+                                       - onChange={setCaption}
+                                       - placeholder="문구를 입력하세요... (@로 사용자 태그)"
+                                       - rows={4}
+                                */}
                                 <textarea
                                     placeholder="문구를 입력하세요..."
                                     value={caption}
@@ -157,7 +154,8 @@ const UploadPage = () => {
                                     rows={4}
                                     className="upload-caption-input"
                                 />
-                                <div className="upload-caption-content">
+
+                                <div className="upload-caption-count">
                                     {caption.length}/2,200
                                 </div>
                             </div>
@@ -166,7 +164,7 @@ const UploadPage = () => {
 
                     <div className="upload-options">
                         <button className="upload-option-btn"
-                                onClick={handleLocationChange}>
+                                onClick={handleLocationChange} >
                             <span className="upload-option-text">{location || '위치 추가'}</span>
                             <span className="upload-option-arrow">›</span>
                         </button>

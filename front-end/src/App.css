@@ -1639,3 +1639,85 @@ body {
 .story-delete-button:hover {
     background: #f9f9f9;
 }
+
+/*=============================================*/
+/*=============================================*/
+.mention-suggestions {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+    z-index: 1000;
+}
+
+.mention-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mention-item:hover,
+.mention-item.selected {
+    background-color: #f5f5f5;
+}
+
+.mention-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.mention-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.mention-username {
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
+}
+
+.mention-fullname {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.mention-link {
+    color: #0095f6;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.mention-link:hover {
+    text-decoration: underline;
+}
+
+.mention-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mention-suggestions::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.mention-suggestions::-webkit-scrollbar-thumb {
+    background: #dbdbdb;
+    border-radius: 3px;
+}
+
+.mention-suggestions::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+}
