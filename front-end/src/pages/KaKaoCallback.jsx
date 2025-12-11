@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import axios from "axios";
 
-const KaKaoCallback = () => {
+const KakaoCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -10,22 +10,24 @@ const KaKaoCallback = () => {
         const code = params.get("code");
 
         if (code) {
-            kakaoLoginProcess(code);
+            kakoLoginProcess(code);
         } else {
             alert("잘못된 접근입니다.");
-            navigate('/login');
+            navigate("/login");
         }
     }, []);
 
-    const kakaoLoginProcess = async (code) => {
+    const kakoLoginProcess = async (code) => {
 
         try {
-            const res = await axios.post('/api/auth/kakao', {code});
+            const res = await axios.post("/api/auth/kakao", {code});
+
             if (res.status === 200) {
-                // 1. 이미 가입된 회원 -> 로그인 성공처리
+                // 1.이미 가입된 회원 -> 로그인 성공처리
+
                 const {token, user} = res.data;
-                localStorage.getItem("token", token);
-                localStorage.getItem("user", JSON.stringify(user));
+                localStorage.setItem("token", token);
+                localStorage.setItem("user", JSON.stringify(user));
                 alert(`환영합니다. ${user.userName}님!`);
                 navigate("/feed");
             } else if (res.status === 202) {
@@ -34,23 +36,25 @@ const KaKaoCallback = () => {
                 alert("가입되지 않은 회원입니다. 회원가입을 진행해주세요.");
                 navigate("/signup", {
                     state: {
-                        email: kakaoUser.email,
-                        name: kakaoUser.name,
+                        email: kakaoUser.userEmail,
+                        name: kakaoUser.userName,
+                        fullname: kakaoUser.userFullname,
                     }
                 });
             }
         } catch (err) {
-            alert("카카오 로그인 중에 오류가 발생했습니다.");
+            console.log(err);
+            alert("카카오 로그인 중 오류가 발생했습니다.");
             navigate("/login");
-        }
-    }
 
-    return (
+        }
+    };
+    return(
         <div>
             <h2>카카오 로그인 처리중입니다.</h2>
             <p>잠시만 기다려주세요.</p>
         </div>
     )
-};
+}
 
-export default KaKaoCallback;
+export default KakaoCallback;
