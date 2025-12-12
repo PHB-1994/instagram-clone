@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -27,12 +29,12 @@ public class UserServiceImpl implements UserService{
         // 이미 존재하는 이메일인지 확인하기
         // 이미 존재하는 이메일이라면 throw new RunTimeException 이미 존재하는 이메일입니다. 처리
         User existingEmail = userMapper.selectUserByUserEmail(user.getUserEmail());
-        if(existingEmail != null){
+        if (existingEmail != null) {
             throw new RuntimeException("이미 존재하는 이메일입니다.");
         }
         // 이미 존재하는 사용자명인지 확인
         String existingName = userMapper.selectUserByUserName(user.getUserName());
-        if(existingName != null){
+        if (existingName != null) {
             throw new RuntimeException("이미 존재하는 사용자 이름입니다.");
         }
 
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService{
         user.setUserPassword(encodePw);
 
         // 기본 아바타 설정. 유저가 아바타 설정을 안했을 때 기본 아바타 이미지로 설정
-        if(user.getUserAvatar() == null || user.getUserAvatar().isEmpty()) {
+        if (user.getUserAvatar() == null || user.getUserAvatar().isEmpty()) {
             user.setUserAvatar("default-avatar.png");
         }
 
@@ -56,13 +58,13 @@ public class UserServiceImpl implements UserService{
         // 이메일로 사용자 조회
         User user = userMapper.selectUserByUserEmail(userEmail);
 
-        if(user == null){
-            log.warn("로그인 실패 - 존재하지 않는 이메일 : {}",  userEmail);
+        if (user == null) {
+            log.warn("로그인 실패 - 존재하지 않는 이메일 : {}", userEmail);
             return null;
         }
 
         // 비밀번호 검증
-        if(!passwordEncoder.matches(userPassword, user.getUserPassword())){
+        if (!passwordEncoder.matches(userPassword, user.getUserPassword())) {
             log.warn("로그인 실패 - 잘못된 비밀번호 : {}", userEmail);
             return null;
         }
@@ -80,11 +82,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserByUserName(String userName) {
-        return null;
-    }
-
-    @Override
     public User getUserById(int userId) {
         return userMapper.selectUserById(userId);
     }
@@ -94,29 +91,61 @@ public class UserServiceImpl implements UserService{
     public User updateUser(User user, MultipartFile file) {
 
         User existingUser = userMapper.selectUserById(user.getUserId());
-        if(existingUser == null){
+        if (existingUser == null) {
             throw new RuntimeException("사용자 정보를 찾을 수 없습니다.");
         }
 
-        if(file != null &&  !file.isEmpty()) {
-            try{
+        if (file != null && !file.isEmpty()) {
+            try {
                 String newAvatarPath = fileUploadService.uploadProfileImage(file);
                 existingUser.setUserAvatar(newAvatarPath);
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("프로필 이미지 수정 중 오류 발생 : {}", e);
                 throw new RuntimeException("이미지 업로드 실패");
             }
         }
 
-        if(user.getUserName() != null) existingUser.setUserName(user.getUserName());
-        if(user.getUserEmail() != null) existingUser.setUserEmail(user.getUserEmail());
-        if(user.getUserPassword() != null) existingUser.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
-        if(user.getUserFullname() != null) existingUser.setUserFullname(user.getUserFullname());
+        if (user.getUserName() != null) existingUser.setUserName(user.getUserName());
+        if (user.getUserEmail() != null) existingUser.setUserEmail(user.getUserEmail());
+        if (user.getUserPassword() != null)
+            existingUser.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        if (user.getUserFullname() != null) existingUser.setUserFullname(user.getUserFullname());
 
         // 5. DB 업데이트 작업
         userMapper.updateUser(existingUser);
 
         existingUser.setUserPassword(null);
         return existingUser;
+    }
+
+    @Override
+    public List<User> searchUser(String query) {
+        // 요구사항:
+        // 1. query가 null이거나 빈 문자열이면 빈 ArrayList 반환
+        // 2. userMapper.searchUsersByUserName(query) 호출
+        // 3. 예외 발생 시 로그 출력 후 빈 ArrayList 반환
+
+        // 여기에 코드 작성
+        List<User> r = new ArrayList<>();
+        if (query == null || query.isEmpty()) return r;
+
+        try {
+            return userMapper.searchUsersByUserName(query);
+
+        } catch (Exception e) {
+            log.info("유저 검색 중 오류 발생 : {}", e);
+            return r;
+        }
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+
+        try {
+            return userMapper.selectUserByUserNameExact(userName);
+        } catch (Exception e) {
+            log.info("유저 검색 중 오류 발생 : {}", e);
+            return null;
+        }
     }
 }

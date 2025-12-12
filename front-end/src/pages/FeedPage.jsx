@@ -4,6 +4,7 @@ import apiService from '../service/apiService';
 import {Heart, MessageCircle, Send, Bookmark, MoreHorizontal} from 'lucide-react';
 import Header from "../components/Header";
 import {getImageUrl} from "../service/commonService";
+import MentionText from "../components/MentionText";
 // TODO 12: MentionText 컴포넌트 import
 // import MentionText from "../components/MentionText";
 
@@ -145,6 +146,7 @@ const FeedPage = () => {
 
                                 <div className="post-caption">
                                     <span className="post-caption-username">{post.userName}</span>
+                                    <MentionText text={post.postCaption}/>
 
                                     {/* TODO 13: 캡션 텍스트를 MentionText로 교체 */}
                                     {/*
@@ -152,7 +154,7 @@ const FeedPage = () => {
                                         1. 기존 {post.postCaption} 주석 처리
                                         2. <MentionText text={post.postCaption} /> 사용
                                     */}
-                                    {post.postCaption}
+                                    {/*{post.postCaption}*/}
                                 </div>
 
                                 {post.commentCount > 0 && (

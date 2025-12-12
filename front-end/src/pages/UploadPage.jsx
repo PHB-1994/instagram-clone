@@ -135,26 +135,12 @@ const UploadPage = () => {
                                 <div className="upload-username">
                                     {user.userName}
                                 </div>
-
-                                {/* TODO 11: 기존 textarea를 MentionInput으로 교체 */}
-                                {/*
-                                    요구사항:
-                                    1. 기존 textarea 주석 처리
-                                    2. <MentionInput /> 사용
-                                    3. props 전달:
-                                       - value={caption}
-                                       - onChange={setCaption}
-                                       - placeholder="문구를 입력하세요... (@로 사용자 태그)"
-                                       - rows={4}
-                                */}
-                                <textarea
-                                    placeholder="문구를 입력하세요..."
+                                <MentionInput
                                     value={caption}
-                                    onChange={(e) => setCaption(e.target.value)}
+                                    onChange={setCaption}
+                                    placeholder="문구를 입력하세요... (@로 사용자 태그)"
                                     rows={4}
-                                    className="upload-caption-input"
                                 />
-
                                 <div className="upload-caption-count">
                                     {caption.length}/2,200
                                 </div>

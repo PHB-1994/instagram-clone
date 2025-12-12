@@ -43,11 +43,11 @@
     <!-- 유저 수정 -->
     <update id="updateUser" parameterType="User">
         UPDATE users
-        SET user_name = #{userName},
-            user_email = #{userEmail},
+        SET user_name     = #{userName},
+            user_email    = #{userEmail},
             user_fullname = #{userFullname},
-            user_avatar = #{userAvatar},
-            updated_at = CURRENT_TIMESTAMP
+            user_avatar   = #{userAvatar},
+            updated_at    = CURRENT_TIMESTAMP
         WHERE user_id = #{userId}
     </update>
 
@@ -59,9 +59,18 @@
     </delete>
 
     <!-- 유저 이름으로 찾기 -->
-    <select id="searchUsersByUserName" parameterType="String" resultType="String">
-        SELECT user_name
+    <select id="searchUsersByUserName" parameterType="String" resultType="User">
+        SELECT user_name, user_id, user_email, user_fullname, user_avatar
         FROM users
-        WHERE user_name LIKE '%' || #{keyword} ||'%'
+        WHERE user_name LIKE CONCAT('%', #{query}, '%')
+        ORDER BY user_fullname
+        LIMIT 10
+    </select>
+
+    <!-- 유저네임으로 정확히 일치하는 유저 조회 -->
+    <select id="selectUserByUserNameExact" parameterType="String" resultType="User">
+        SELECT user_name, user_id, user_email, user_fullname, user_avatar
+        FROM users
+        WHERE user_name = #{userName}
     </select>
 </mapper>

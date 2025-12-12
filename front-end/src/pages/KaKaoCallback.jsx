@@ -10,17 +10,19 @@ const KakaoCallback = () => {
         const code = params.get("code");
 
         if (code) {
-            kakoLoginProcess(code);
+            kakaoLoginProcess(code);
         } else {
             alert("잘못된 접근입니다.");
             navigate("/login");
         }
     }, []);
 
-    const kakoLoginProcess = async (code) => {
+    const kakaoLoginProcess = async (code) => {
 
         try {
             const res = await axios.post("/api/auth/kakao", {code});
+
+            console.log("res.data", res.data);
 
             if (res.status === 200) {
                 // 1.이미 가입된 회원 -> 로그인 성공처리
@@ -30,6 +32,7 @@ const KakaoCallback = () => {
                 localStorage.setItem("user", JSON.stringify(user));
                 alert(`환영합니다. ${user.userName}님!`);
                 navigate("/feed");
+
             } else if (res.status === 202) {
                 // 2. 성공했으나 미가입 회원 -> 회원가입 페이지로 이동 (정보 전달)
                 const kakaoUser = res.data.kakaoUser;
