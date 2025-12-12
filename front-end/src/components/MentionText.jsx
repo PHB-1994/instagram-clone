@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import apiService from '../service/apiService';
 
-const MentionText = ({ text, className = '' }) => {
+const MentionText = ({text, className = ''}) => {
     const navigate = useNavigate();
 
     // TODO 8: 멘션 파싱 함수 구현
@@ -24,23 +24,47 @@ const MentionText = ({ text, className = '' }) => {
 
         // 여기에 코드 작성
         // 힌트: while ((match = mentionRegex.exec(text)) !== null) { ... }
+        while((match = mentionRegex.exec(text)) !== null){
+            // @ 이전 일반 텍스트
+            if(match.index > lastIndex){
+                parts.push({
+                    type: 'text',
+                    content: text.substring(lastIndex, match.index),
+                });
+            }
+
+            // 멘션 부분
+            parts.push({
+                type: 'mention',
+                content:match[0],   // @username
+                username: match[1], // username
+            })
+            lastIndex = match.index + match[0].length;
+        }
+        // 멘션 이후 남은 텍스트들은 텍스트 형태 유지
+        if(lastIndex < text.length) {
+            parts.push({
+                type: 'text',
+                content: text.substring(lastIndex),
+            })
+        }
 
         return parts;
     };
 
     // TODO 9: 멘션 클릭 핸들러 구현
     const handleMentionClick = async (username, e) => {
-        // 요구사항:
-        // 1. e.preventDefault()와 e.stopPropagation() 호출
-        // 2. apiService.getUserByUsername(username) 호출
-        // 3. user가 존재하고 userId가 있으면 navigate로 이동
-        //    `/myfeed?userId=${user.userId}` 또는 적절한 경로
-        // 4. 에러 발생 시 콘솔에 로그 출력
-
         e.preventDefault();
         e.stopPropagation();
 
-        // 여기에 코드 작성
+        try{
+            const u = apiService.getUserByUsername(username);
+            if (u && u.userId) {
+                navigate(`/myfeed?userId=${u.userId}`);
+            }
+        }catch(e){
+            console.error("유저 찾기 실패", e);
+        }
 
     };
 
