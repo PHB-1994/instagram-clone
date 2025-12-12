@@ -54,11 +54,18 @@ const MentionText = ({text, className = ''}) => {
 
     // TODO 9: 멘션 클릭 핸들러 구현
     const handleMentionClick = async (username, e) => {
+        // 요구사항:
+        // 1. e.preventDefault()와 e.stopPropagation() 호출
+        // 2. apiService.getUserByUsername(username) 호출
+        // 3. user가 존재하고 userId가 있으면 navigate로 이동
+        //    `/myfeed?userId=${user.userId}` 또는 적절한 경로
+        // 4. 에러 발생 시 콘솔에 로그 출력
+
         e.preventDefault();
         e.stopPropagation();
 
         try{
-            const u = apiService.getUserByUsername(username);
+            const u = await apiService.getUserByUsername(username);
             if (u && u.userId) {
                 navigate(`/myfeed?userId=${u.userId}`);
             }
@@ -87,6 +94,7 @@ const MentionText = ({text, className = ''}) => {
                         >
                             {part.content}
                         </span>
+
                     );
                 }
                 return <span key={index}>{part.content}</span>;
