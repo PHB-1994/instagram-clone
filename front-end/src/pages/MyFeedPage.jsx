@@ -32,7 +32,7 @@ const MyFeedPage = () => {
             // 내 게시물만 필터링
             const myPosts = allPosts.filter(post => post.userId !== userId);
              */
-            const allPosts = await apiService.getPost(userId);
+            const allPosts = await apiService.getUserPost(userId);
             setPosts(allPosts);
             console.log(allPosts);
 

@@ -15,7 +15,7 @@ const FeedPage = () => {
     const [posts, setPosts] = useState([]);
     const [stories, setStories] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectPost, setSelectPost] = useState(null);
+    const [selectedPost, setSelectedPost] = useState(null);
 
     const navigate = useNavigate();
     const currentUser = JSON.parse(localStorage.getItem('user') || []);
@@ -85,9 +85,9 @@ const FeedPage = () => {
         try {
             await apiService.deletePost(postId);
             setPosts((posts.filter(p => p.postId !== postId)));
-            setSelectPost(null);
+            setSelectedPost(null);
             alert("게시물이 삭제되었습니다.");
-        } catch(err){
+        } catch (err) {
             alert("게시물 삭제에 실패했습니다.");
         }
     }
@@ -146,8 +146,15 @@ const FeedPage = () => {
 
                             <img src={post.postImage}
                                  className="post-image"
-                                 onClick={() => setSelectPost(post)}
+                                 onClick={() => navigate(`/post/${post.postId}`)}
+                                 style={{cursor: 'pointer'}}/>
+
+                            {/*
+                            <img src={post.postImage}
+                                 className="post-image"
+                                 onClick={() => setSelectedPost(post)}
                                  style={{cursor : 'pointer'}}/>
+                            */}
 
                             <div className="post-content">
                                 <div className="post-actions">
@@ -185,14 +192,14 @@ const FeedPage = () => {
                     ))
                 )}
             </div>
-            {selectPost && (
+            {selectedPost && (
                 <PostDetailModal
-                    post={selectPost}
+                    post={selectedPost}
                     currentUserId={currentUser.userId}
-                    onClose={() => setSelectPost(null)}
+                    onClose={() => setSelectedPost(null)}
                     onDelete={deletePost}
-                    onToggleLike={toggleLike()}
-                    />
+                    onToggleLike={toggleLike}
+                />
             )}
         </div>
     );

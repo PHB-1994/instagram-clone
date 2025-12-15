@@ -11,6 +11,8 @@ import MyFeedPage from "./pages/MyFeedPage";
 import StoryDetail from "./pages/StoryDetail";
 import EditProfilePage from "./pages/EditProfilePage";
 import KaKaoCallback from "./pages/KaKaoCallback";
+import PostDetailModal from "./components/PostDetailModal";
+import PostDetailPage from "./pages/PostDetailPage";
 
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
                 return JSON.parse(savedUser);
             }
             return null;
-        } catch(err){
+        } catch (err) {
             localStorage.removeItem("user");
             localStorage.removeItem("token");
             return null;
@@ -44,6 +46,14 @@ function App() {
                                <PrivateRoute>
                                    <FeedPage/>
                                </PrivateRoute>}
+                    />
+                    <Route
+                        path="/post/:postId"
+                        element={
+                            <PrivateRoute>
+                                <PostDetailPage/>
+                            </PrivateRoute>
+                        }
                     />
                     <Route
                         path="/story/detail/:userId"

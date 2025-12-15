@@ -58,7 +58,7 @@ public class PostController {
     }
 
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<Post>> getAllPostsByUserId(@RequestHeader("Authorization") String authHeader,
                                                           @PathVariable int userId) {
 
@@ -72,6 +72,22 @@ public class PostController {
             return ResponseEntity.badRequest().build();
         }
 
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<Post> getPostById(@RequestHeader("Authorization") String authHeader,
+                                                          @PathVariable int postId) {
+
+        try {
+            String token = authHeader.substring(7);
+            int currentUserId = jwtUtil.getUserIdFromToken(token);
+
+            Post post = postService.getPostById(currentUserId, postId);
+            log.info("post : {}", post);
+            return ResponseEntity.ok(post);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("{postId}/like")

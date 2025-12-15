@@ -96,10 +96,19 @@ const apiService = {
         return res.data;
     },
 
-    getPost: async (userId) => {
-        const res = await api.get('/posts/' + userId);
+    // user or my 추가
+    getUserPost: async (userId) => {
+        const res = await api.get('/posts/user/' + userId);
         return res.data;
     },
+
+    // 단순 getPost 사용
+    getPost: async (postId) => {
+        const res = await api.get('/posts/' + postId);
+        console.log("res.data : ", res.data);
+        return res.data;
+    },
+
 
     createPost: async (postImage, postCaption, postLocation) => {
         const formData = new FormData();
