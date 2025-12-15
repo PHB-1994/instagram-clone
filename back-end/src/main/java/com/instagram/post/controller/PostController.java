@@ -82,7 +82,7 @@ public class PostController {
             String token = authHeader.substring(7);
             int currentUserId = jwtUtil.getUserIdFromToken(token);
 
-            Post post = postService.getPostById(currentUserId, postId);
+            Post post = postService.getPostById(postId, currentUserId);
             log.info("post : {}", post);
             return ResponseEntity.ok(post);
         } catch (Exception e) {

@@ -164,7 +164,8 @@ const FeedPage = () => {
                                             onClick={() => toggleLike(post.postId, post.isLiked)}
                                             fill={post.isLiked ? "#ed4956" : "none"}
                                         />
-                                        <MessageCircle className="action-icon"/>
+                                        <MessageCircle className="action-icon"
+                                                       onClick={() => navigate(`/post/${post.postId}`)}/>
                                         <Send className="action-icon"/>
                                     </div>
                                     <Bookmark className="action-icon"/>
@@ -180,7 +181,8 @@ const FeedPage = () => {
                                 </div>
 
                                 {post.commentCount > 0 && (
-                                    <button className="post-comments-btn">
+                                    <button className="post-comments-btn"
+                                    >
                                         댓글{post.commentCount}개 모두 보기
                                     </button>
                                 )}
