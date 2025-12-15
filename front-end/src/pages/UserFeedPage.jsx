@@ -5,7 +5,7 @@ import apiService from "../service/apiService";
 import {useNavigate} from "react-router-dom";
 import {getImageUrl} from "../service/commonService";
 
-const MyFeedPage = () => {
+const UserFeedPage = () => {
     const [user, setUser] = useState(null);
     const [posts, setPosts] = useState([]);
     const [activeTab, setActiveTab] = useState('posts');
@@ -129,4 +129,4 @@ const MyFeedPage = () => {
     );
 };
 
-export default MyFeedPage;
+export default UserFeedPage;

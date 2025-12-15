@@ -2,17 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, Film, Home, MessageCircle, PlusSquare, Settings, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
-
-/**
- * TODO
- *  과제 3: MyFeedPage.jsx 와 StoryDetail.jsx 임의 데이터를 controller 에서 가져온 데이터로 변경해보기
- *  GET -> mapper.xml mapper.java service.java serviceImpl.java restController.java 순서로 작업 후
- *         postman 이나 백엔드 api/endpoint 주소에서 데이터를 가져오는지 확인
- *         APIService.js 에서 백엔드 데이터 전달 받는 작업
- *         각 jsx 에서 api 로 가져온 데이터를 화면에 보여주는 작업
- *         이후 세부 js 작업 진행
- *  POST -> 백엔드에서 확인을 하는 방법이 익숙치 않은 경우 프론트 -> 백엔드 순서로 작업
- */
+import SearchModal from "./SearchModal";
 
 const Header = ({
                     type="feed",
@@ -25,19 +15,28 @@ const Header = ({
     const navigate = useNavigate();
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
     const openSidebar = () => setIsSidebarOpen(true);
-
     const closeSidebar = () => setIsSidebarOpen(false);
+    const [isSearchOpen, setIsSearchOpen] = useState()
+
+    const openSearch = () => setIsSearchOpen(true);
+    const closeSearch = () => setIsSearchOpen(false);
+
 
     if(type === 'feed') {
         return (
             <>
                 <header className="header">
                     <div className="header-container">
-                        <h1 className="header-title">Instagram</h1>
+                        <img className="header-title"
+                             src="static/img/logo.png"
+                             onClick={() => navigate('/feed')}
+                        />
                         <div className="header-nav">
-                            <Home className="header-icon" onClick={() => navigate('/')}/>
+                            {/* TODO 3: Home 아이콘 클릭 시 검색 모달 열기 */}
+                            {/* 요구사항: onClick에 openSearch 함수 연결 (기존 navigate('/') 제거) */}
+                            <Home className="header-icon" onClick={openSearch}/>
+
                             <MessageCircle className="header-icon"/>
                             <PlusSquare className="header-icon" onClick={() => navigate('/upload')}/>
                             <Film className="header-icon" onClick={() => navigate("/story/upload")}/>
@@ -53,9 +52,11 @@ const Header = ({
                 </header>
 
                 <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
+                <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
             </>
         )
     }
+
     if(type ==='upload') {
         return (
             <header className="upload-header">
@@ -76,4 +77,44 @@ const Header = ({
         )
     }
 }
+
 export default Header;
+
+
+/*
+=================================================================
+TODO 체크리스트 및 정답
+=================================================================
+
+TODO 1: 검색 모달 상태 변수 선언
+정답:
+const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+TODO 2: 검색 모달 열기/닫기 함수 구현
+정답:
+const openSearch = () => setIsSearchOpen(true);
+const closeSearch = () => setIsSearchOpen(false);
+
+TODO 3: Home 아이콘 클릭 시 검색 모달 열기
+정답:
+<Home className="header-icon" onClick={openSearch}/>
+
+TODO 4: SearchModal 컴포넌트 추가
+정답:
+<SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
+
+=================================================================
+완성된 코드:
+=================================================================
+
+const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+const openSearch = () => setIsSearchOpen(true);
+const closeSearch = () => setIsSearchOpen(false);
+
+<Home className="header-icon" onClick={openSearch}/>
+
+<SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
+
+=================================================================
+*/

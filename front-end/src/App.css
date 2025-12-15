@@ -145,6 +145,7 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
     font-family: 'Cookie', cursive;
+    cursor: pointer;
 }
 
 .header-nav {
@@ -1720,4 +1721,431 @@ body {
 
 .mention-suggestions::-webkit-scrollbar-thumb:hover {
     background: #b3b3b3;
+}
+
+/*===================================*/
+/*===================================*/
+
+.search-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.search-modal-content {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    max-height: 80vh;
+    margin-top: 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.search-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #262626;
+}
+
+.search-modal-close {
+    cursor: pointer;
+    color: #262626;
+    transition: opacity 0.2s;
+}
+
+.search-modal-close:hover {
+    opacity: 0.6;
+}
+
+.search-input-wrapper {
+    position: relative;
+    padding: 12px 16px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.search-input-icon {
+    position: absolute;
+    left: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8e8e8e;
+    pointer-events: none;
+}
+
+.search-modal-input {
+    width: 100%;
+    padding: 8px 36px 8px 36px;
+    background-color: #efefef;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-modal-input::placeholder {
+    color: #8e8e8e;
+}
+
+.search-clear-icon {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8e8e8e;
+    cursor: pointer;
+    background: #c7c7c7;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.search-clear-icon:hover {
+    background: #a8a8a8;
+}
+
+.search-results-container {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 200px;
+    max-height: calc(80vh - 140px);
+}
+
+.search-section-header {
+    padding: 16px 20px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+    background-color: #fafafa;
+}
+
+.search-result-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.search-result-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-username {
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-result-fullname {
+    font-size: 14px;
+    color: #8e8e8e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-remove-icon {
+    color: #8e8e8e;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.search-remove-icon:hover {
+    color: #262626;
+}
+
+.search-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #8e8e8e;
+    font-size: 14px;
+}
+
+.search-loading {
+    padding: 40px 20px;
+    text-align: center;
+    color: #8e8e8e;
+    font-size: 14px;
+}
+
+.search-results-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.search-results-container::-webkit-scrollbar-thumb {
+    background: #dbdbdb;
+    border-radius: 3px;
+}
+
+.search-results-container::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+}
+
+@media (max-width: 768px) {
+    .search-modal-content {
+        max-width: 100%;
+        margin-top: 0;
+        border-radius: 0;
+        max-height: 100vh;
+    }
+
+    .search-results-container {
+        max-height: calc(100vh - 140px);
+    }
+}
+
+
+
+/*===================================================*/
+/*===================================================*/
+.post-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.post-detail-container {
+    background: white;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.post-detail-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    color: white;
+    transition: background 0.2s;
+}
+
+.post-detail-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.post-detail-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.post-detail-image-section {
+    flex: 1;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 65%;
+}
+
+.post-detail-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+.post-detail-info-section {
+    width: 35%;
+    min-width: 335px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
+
+.post-detail-header {
+    padding: 16px;
+    border-bottom: 1px solid #dbdbdb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-detail-caption-section {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.post-detail-actions {
+    border-top: 1px solid #dbdbdb;
+    padding: 12px 16px;
+}
+
+.post-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+}
+
+.post-menu-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    z-index: 1002;
+    animation: slideUp 0.2s ease;
+}
+
+.post-menu-button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #dbdbdb;
+    transition: background 0.2s;
+}
+
+.post-menu-button:last-child {
+    border-bottom: none;
+}
+
+.post-menu-button:hover {
+    background: #fafafa;
+}
+
+.post-menu-button.delete {
+    color: #ed4956;
+    font-weight: 600;
+}
+
+.post-menu-button.cancel {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .post-detail-container {
+        flex-direction: column;
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .post-detail-image-section {
+        max-width: 100%;
+        max-height: 60vh;
+    }
+
+    .post-detail-info-section {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .post-detail-close {
+        background: rgba(0, 0, 0, 0.8);
+    }
+}
+
+.post-card .post-image:hover {
+    opacity: 0.95;
+    transition: opacity 0.2s;
 }
