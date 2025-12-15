@@ -5,16 +5,20 @@ import {Heart, MessageCircle, Send, Bookmark, MoreHorizontal} from 'lucide-react
 import Header from "../components/Header";
 import {getImageUrl} from "../service/commonService";
 import MentionText from "../components/MentionText";
+import PostOptionMenu from "../components/PostOptionMenu";
+import PostDetailModal from "../components/PostDetailModal";
 // TODO 12: MentionText 컴포넌트 import
 // import MentionText from "../components/MentionText";
 
-
+/* 이미지 클릭 시 모달 열기 */
 const FeedPage = () => {
     const [posts, setPosts] = useState([]);
     const [stories, setStories] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [selectPost, setSelectPost] = useState(null);
 
     const navigate = useNavigate();
+    const currentUser = JSON.parse(localStorage.getItem('user') || []);
 
     useEffect(() => {
         loadFeedData();
@@ -77,6 +81,17 @@ const FeedPage = () => {
         }
     };
 
+    const deletePost = async (postId) => {
+        try {
+            await apiService.deletePost(postId);
+            setPosts((posts.filter(p => p.postId !== postId)));
+            setSelectPost(null);
+            alert("게시물이 삭제되었습니다.");
+        } catch(err){
+            alert("게시물 삭제에 실패했습니다.");
+        }
+    }
+
     if (loading) {
         return (
             <div className="feed-container">
@@ -119,13 +134,21 @@ const FeedPage = () => {
                         <article key={post.postId} className="post-card">
                             <div className="post-header">
                                 <div className="post-user-info">
-                                    <img src={getImageUrl(post.userAvatar)} className="post-user-avatar"/>
+                                    <img src={getImageUrl(post.userAvatar)}
+                                         className="post-user-avatar"/>
                                     <span className="post-username">{post.userName}</span>
                                 </div>
-                                <MoreHorizontal className="post-more-icon"/>
+                                <PostOptionMenu
+                                    post={post}
+                                    currentUser={currentUser.userId}
+                                    onDelete={deletePost}/>
                             </div>
 
-                            <img src={post.postImage} className="post-image"/>
+                            <img src={post.postImage}
+                                 className="post-image"
+                                 onClick={() => setSelectPost(post)}
+                                 style={{cursor : 'pointer'}}/>
+
                             <div className="post-content">
                                 <div className="post-actions">
                                     <div className="post-actions-left">
@@ -162,6 +185,15 @@ const FeedPage = () => {
                     ))
                 )}
             </div>
+            {selectPost && (
+                <PostDetailModal
+                    post={selectPost}
+                    currentUserId={currentUser.userId}
+                    onClose={() => setSelectPost(null)}
+                    onDelete={deletePost}
+                    onToggleLike={toggleLike()}
+                    />
+            )}
         </div>
     );
 };
