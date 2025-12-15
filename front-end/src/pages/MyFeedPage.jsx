@@ -46,7 +46,7 @@ const MyFeedPage = () => {
         }
     }
 
-    if(loading) return(
+    if (loading) return (
         <div>로딩중...</div>
     )
     return (
@@ -118,7 +118,21 @@ const MyFeedPage = () => {
 
                 <div className="profile-posts-grid">
                     {posts.map((post) => (
-                        <div key={post.postId} className="grid-item">
+                        <div key={post.postId}
+                             className="grid-item"
+                             onClick={() => navigate(`/post/${post.postId}`)}>
+                            {/*
+                            이미지 위에 overlay 와 같은 효과가 덮어씌워진 상태로
+                                <div key={post.postId}
+                                className="grid-item"
+                                onClick={() => navigate(`/post/${post.postId}`)}
+                            >
+                            클릭 기능을 넣거나
+                            <div className="profile-posts-grid"
+                                onClick={() => navigate(`/post/${post.postId}`)}
+                            >
+                            클릭 기능을 넣어주는 것이 좋다
+                            */}
                             <img src={post.postImage} alt="post"/>
                             <div className="grid-hover-overlay"></div>
                         </div>

@@ -3,15 +3,17 @@ import {X, Heart, MessageCircle, Send, Bookmark} from 'lucide-react';
 import {getImageUrl} from '../service/commonService';
 import Header from "../components/Header";
 import PostDetailModal from "../components/PostDetailModal";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import apiService from "../service/apiService";
 import PostOptionMenu from "../components/PostOptionMenu";
 import MentionText from "../components/MentionText";
 
 const PostDetailPage = () => {
 
-    const [post, setPost] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const {postId} = useParams();
+
+    const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [selectedPost, setSelectedPost] = useState(null);
 
     const navigate = useNavigate();
@@ -25,7 +27,8 @@ const PostDetailPage = () => {
         setLoading(true);
 
         try {
-            const postsData = await apiService.getPost(post.postId);
+            const postsData = await apiService.getPost(postId);
+            console.log("postId : ", postId);
             setPost(postsData);
         } catch (err) {
             alert("포스트 피드를 불러오는데 실패했습니다.")
@@ -112,7 +115,9 @@ const PostDetailPage = () => {
                     <div className="post-header">
                         <div className="post-user-info">
                             <img src={getImageUrl(post.userAvatar)}
-                                 className="post-user-avatar"/>
+                                 className="post-user-avatar"
+                                 style={{cursor: 'pointer'}}
+                            onClick={() => navigate(`/myfeed?userId=${post.userId}`)}/>
                             <span className="post-username">{post.userName}</span>
                         </div>
                         <PostOptionMenu
@@ -123,7 +128,6 @@ const PostDetailPage = () => {
 
                     <img src={post.postImage}
                          className="post-image"
-                        // onClick={() => setSelectedPost(post)}
                          onClick={() => navigate(`/post/${post.postId}`)}
                          style={{cursor: 'pointer'}}/>
 
