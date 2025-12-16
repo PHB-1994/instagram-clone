@@ -77,7 +77,6 @@ const UploadPage = () => {
                             <div style={{width:'100%', display:'flex', flexDirection:'column'}}>
                                 <img
                                     src={imagePreview}
-                                    alt=""
                                     className="upload-preview-image"
                                     style={{filter: selectedFilter}}
                                 />
@@ -131,7 +130,6 @@ const UploadPage = () => {
                             <img className="upload-user-avatar"
                                  src={avatarImage}
                                  onError={handleAvatarError}
-                                 alt=""
                             />
                             <div className="upload-caption-right">
                                 <div className="upload-username">
