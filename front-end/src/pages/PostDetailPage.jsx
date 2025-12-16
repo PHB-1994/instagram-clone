@@ -155,7 +155,7 @@ const PostDetailPage = () => {
                 <article key={post.postId} className="post-card">
                     <div className="post-header">
                         <div className="post-user-info">
-                            <img src={getImageUrl(post.userAvatar)}
+                            <img src={getImageUrl(currentUser.userAvatar)}
                                  className="post-user-avatar"
                                  style={{cursor: 'pointer'}}
                                  onClick={() => navigate(`/myfeed?userId=${post.userId}`)}
