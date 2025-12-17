@@ -53,7 +53,6 @@ const PostDetailPage = () => {
         } finally {
             setLoading(false);
         }
-
     }
 
     const handleDeleteComment = () => {
