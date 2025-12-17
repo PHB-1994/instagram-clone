@@ -27,14 +27,14 @@ public class WebConfig implements WebMvcConfigurer {
             public void addCorsMappings(CorsRegistry registry) {
                 // REST API CORS 설정
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:3000", "https://insta-front-onzu857eq-phbs-projects-56024376.vercel.app")
+                        .allowedOrigins("http://localhost:3000", "https://insta-front-bay.vercel.app")
                         .allowCredentials(true)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*");
 
                 // WebSocket CORS 설정 추가
                 registry.addMapping("/ws/**")
-                        .allowedOrigins("http://localhost:3000", "https://insta-front-onzu857eq-phbs-projects-56024376.vercel.app")
+                        .allowedOrigins("http://localhost:3000", "https://insta-front-bay.vercel.app")
                         .allowCredentials(true)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*");
