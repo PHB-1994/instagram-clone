@@ -3,10 +3,6 @@
 React 기반 프론트엔드와 Spring Boot 기반 백엔드로 구성된 Instagram 클론 프로젝트입니다.  
 프론트엔드와 백엔드를 분리한 구조로 설계하였으며, REST API 기반 통신과 JWT 인증 방식을 사용합니다.
 
----
-
-# 1️⃣ Full Stack Overview
-
 ## 📌 프로젝트 개요
 
 본 프로젝트는 실제 서비스 환경을 고려하여  
