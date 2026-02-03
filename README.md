@@ -1,4 +1,4 @@
-📸 Instagram Clone – Full Stack Monorepo
+## 📸 Instagram Clone – Full Stack Monorepo
 
 본 프로젝트는 Instagram의 핵심 기능을 직접 구현하며,  
 프론트엔드와 백엔드의 역할 분리, 인증 흐름, 데이터 처리 과정을 경험하는 것을 목표로 한  
@@ -144,16 +144,17 @@ jwt:
   secret: your-secret-key
 ```
 
-🎯 프로젝트 목표
+## 🎯 프로젝트 목표
+- Instagram 핵심 기능 구현을 통한 실무형 풀스택 개발 경험
+- 프론트엔드 / 백엔드 책임 분리 및 API 설계 역량 강화
+- JWT 기반 인증·인가 흐름에 대한 이해
+- 데이터 흐름 및 트랜잭션 처리 경험
+- 배포 환경을 고려한 End-to-End 개발 경험
 
-Instagram 핵심 기능 구현을 통한 실무형 풀스택 개발 경험
-프론트엔드 / 백엔드 책임 분리를 통한 구조적 설계 역량 강화
-JWT 기반 인증·인가 흐름에 대한 이해
-데이터 흐름과 트랜잭션 관리 경험
-배포 환경을 고려한 End-to-End 개발 경험
+---
 
-📄 상세 문서
-front-end/README.md
-→ 프론트엔드 구조 및 주요 화면 설명, 트러블슈팅 정리
-back-end/README.md
-→ 백엔드 아키텍처, 인증 구조, 트러블슈팅 정리
+## 📄 상세 문서
+- `front-end/README.md`  
+  → 프론트엔드 구조, 주요 화면, 트러블슈팅 정리
+- `back-end/README.md`  
+  → 백엔드 아키텍처, 인증 구조, 트러블슈팅 정리
