@@ -1,4 +1,4 @@
-Instagram Clone – Full Stack Monorepo
+📸 Instagram Clone – Full Stack Monorepo
 
 본 프로젝트는 Instagram의 핵심 기능을 직접 구현하며,  
 프론트엔드와 백엔드의 역할 분리, 인증 흐름, 데이터 처리 과정을 경험하는 것을 목표로 한  
@@ -108,27 +108,32 @@ instagram-clone/
 cd front-end
 npm install
 npm start
+```
 
 ### Backend
+```bash
 cd back-end
 ./gradlew bootRun
+```
 
 ---
 
 🌱 환경 변수 관리
-
 Frontend
 API 서버 주소
 인증 관련 설정
 
+```bash
 .env
 REACT_APP_API_URL=http://localhost:9000
+```
 
 Backend
 데이터베이스 연결 정보
 JWT Secret Key
 application.yml
 
+```bash
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/instagram
@@ -137,6 +142,7 @@ spring:
 
 jwt:
   secret: your-secret-key
+```
 
 🎯 프로젝트 목표
 
