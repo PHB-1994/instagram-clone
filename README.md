@@ -11,10 +11,12 @@ React 기반 프론트엔드와 Spring Boot 기반 백엔드를 하나의 저장
 
 ## 🧱 프로젝트 구조
 
+```bash
 instagram-clone/
 ├─ front-end/ # React 기반 프론트엔드
 ├─ back-end/ # Spring Boot 기반 REST API 서버
 └─ README.md # 공통 프로젝트 설명
+```
 
 ---
 
@@ -116,7 +118,6 @@ cd back-end
 ./gradlew bootRun
 ```
 
----
 
 🌱 환경 변수 관리
 Frontend
@@ -150,8 +151,6 @@ jwt:
 - JWT 기반 인증·인가 흐름에 대한 이해
 - 데이터 흐름 및 트랜잭션 처리 경험
 - 배포 환경을 고려한 End-to-End 개발 경험
-
----
 
 ## 📄 상세 문서
 - `front-end/README.md`  
